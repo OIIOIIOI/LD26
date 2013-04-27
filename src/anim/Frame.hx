@@ -36,15 +36,16 @@ class Frame implements Public
 		y = yPos;
 		width = w;
 		height = h;
+		trace("frame " + name);
 	}
 	
 	function fromObject (d:Dynamic) :Void {
-		name = d._name;
-		uid = d._uid;
-		x = d._x;
-		y = d._y;
-		width = d._width;
-		height = d._height;
+		name = d.name;
+		uid = d.uid;
+		x = d.x;
+		y = d.y;
+		width = d.width;
+		height = d.height;
 	}
 	
 	function toString () :String {

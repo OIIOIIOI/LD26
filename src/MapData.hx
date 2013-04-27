@@ -53,11 +53,19 @@ class MapData extends BitmapData {
 		spawnDefault(E_Type.Ore);
 	}
 	
-	static function getColor (type:E_Type) : UInt {
+	static public function getColor (type:E_Type) :UInt {
 		return switch (type) {
 			case E_Type.Ground:	C_GROUND;
 			case E_Type.Rock:	C_ROCK;
 			case E_Type.Ore:	C_ORE;
+		}
+	}
+	
+	static public function getType (color:UInt) :E_Type {
+		return switch (color) {
+			case C_ROCK:	E_Type.Rock;
+			case C_ORE:		E_Type.Ore;
+			default: 		E_Type.Ground;
 		}
 	}
 	

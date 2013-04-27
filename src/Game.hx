@@ -1,10 +1,12 @@
 package ;
 
+import anim.FrameManager;
 import flash.display.Bitmap;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+import haxe.Resource;
 import utils.IntPoint;
 import utils.IntRect;
 import utils.Rand;
@@ -13,6 +15,8 @@ import utils.Rand;
  * ...
  * @author 01101101
  */
+
+@:bitmap("bin/tiles.png") class TilesBD extends flash.display.BitmapData { }
 
 class Game extends Sprite {
 	
@@ -35,6 +39,8 @@ class Game extends Sprite {
 		REAL_MAP_SIZE = new IntRect(0, 0, Std.int(SIZE.width / TILE_SIZE) + 4, Std.int(SIZE.height / TILE_SIZE) + 4);
 		RAND = new Rand(1239874560);
 		
+		FrameManager.store("tiles", new TilesBD(0, 0), Resource.getString("tilesJson"));
+		
 		//Data.init();
 		
 		var mapData = new MapData(3586);
@@ -51,11 +57,15 @@ class Game extends Sprite {
 		bd.x = Game.SIZE.width - bd.width;
 		addChild(bd);*/
 		
-		addEventListener(Event.ENTER_FRAME, update);
+		//addEventListener(Event.ENTER_FRAME, update);
+		
+		/*var bd = FrameManager.getFrame("ground", "tiles");
+		trace(bd);
+		addChild(new Bitmap());*/
 	}
 	
 	private function update (e:Event) {
-		map.scroll(-4.1, 8);
+		map.scroll(-4);
 	}
 	
 }

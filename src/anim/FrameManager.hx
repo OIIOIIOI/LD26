@@ -24,9 +24,9 @@ class FrameManager
 	 */
 	static public function store (id:String, sheet:BitmapData, js:String) :Void {
 		var d:Dynamic = Json.parse(js);
-		if (d._frames == null)	return;
+		if (d.frames == null)	return;
 		var frames:Array<Frame> = new Array<Frame>();
-		var a:Array<Dynamic> = cast(d._frames, Array<Dynamic>);
+		var a:Array<Dynamic> = cast(d.frames, Array<Dynamic>);
 		if (a.length <= 0)	return;
 		var frame:Frame;
 		for (f in a) {
@@ -119,7 +119,7 @@ class FrameManager
 	}
 	
 	/**
-	 * 
+	 *
 	 * @param	bd		target bitmap data
 	 * @param	name	frame name
 	 * @param	?id		spritesheet id

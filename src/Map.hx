@@ -35,8 +35,8 @@ class Map extends Sprite {
 		addChild(bitmap);
 		
 		origin = new IntPoint();
-		bitmap.x = origin.x = Std.int((Game.SIZE.width - data.width) / 2);
-		bitmap.y = origin.y = Std.int((Game.SIZE.height - data.height) / 2);
+		//bitmap.x = origin.x = Std.int((Game.SIZE.width - data.width) / 2);
+		//bitmap.y = origin.y = Std.int((Game.SIZE.height - data.height) / 2);
 		
 		scrollFloat = new Point();
 	}
@@ -119,6 +119,28 @@ class Map extends Sprite {
 	
 	public function render (point:IntPoint) {
 		scrollPoint = point.clone();
+		for (y in 0...Game.REAL_MAP_SIZE.height) {
+			for (x in 0...Game.REAL_MAP_SIZE.width) {
+				Game.TAP.x = x * Game.TILE_SIZE;
+				Game.TAP.y = y * Game.TILE_SIZE;
+				// Base ground
+				FrameManager.copyFrame(data, "ground", "tiles", Game.TAP);
+				// Additional graph
+				switch (MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y))) {
+					case E_Type.Ore:
+						FrameManager.copyFrame(data, "ore", "tiles", Game.TAP);
+					case E_Type.Rock:
+						FrameManager.copyFrame(data, "rock", "tiles", Game.TAP);
+					//case E_Type.Ground:
+						//FrameManager.copyFrame(data, "ground", "tiles", Game.TAP);
+					default:
+				}
+			}
+		}
+	}
+	
+	/*public function render (point:IntPoint) {
+		scrollPoint = point.clone();
 		Game.TAR.x = Game.TAR.y = 0;
 		Game.TAR.height = Game.REAL_MAP_SIZE.width * Game.TILE_SIZE;
 		Game.TAR.width = Game.REAL_MAP_SIZE.height * Game.TILE_SIZE;
@@ -126,7 +148,7 @@ class Map extends Sprite {
 		m.translate(-scrollPoint.x, -scrollPoint.y);
 		m.scale(Game.TILE_SIZE, Game.TILE_SIZE);
 		data.draw(pixelData, m);
-	}
+	}*/
 	
 	/*function paintEntity (frame:String, x:Int, y:Int) {
 		//FrameManager.();
