@@ -9,15 +9,12 @@ import flash.Lib;
  * @author 01101101
  */
 
-class Main 
-{
+class Main {
 	
-	static function main() 
-	{
-		var stage = Lib.current.stage;
-		stage.scaleMode = StageScaleMode.NO_SCALE;
-		stage.align = StageAlign.TOP_LEFT;
-		// entry point
+	static function main () {
+		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
+		Lib.current.stage.align = StageAlign.TOP_LEFT;
+		Lib.current.stage.addChild(new Game());
 	}
 	
 }
