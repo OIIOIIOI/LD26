@@ -119,4 +119,14 @@ class MapData extends BitmapData {
 		}
 	}
 	
+	static function getType (color:UInt) :E_Type {
+		return switch (color) {
+			case C_ROCK:	E_Type.Rock:
+			case C_ORE:		E_Type.Ore:
+			case C_BUSH:	E_Type.Bush:
+			case C_RIFT:	E_Type.Rift:
+			default:	E_Type.Ground:
+		}
+	}
+	
 }
