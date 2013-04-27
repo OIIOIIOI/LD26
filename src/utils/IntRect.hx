@@ -23,4 +23,8 @@ class IntRect {
 		return new IntRect(this.x, this.y, this.width, this.height);
 	}
 	
+	public function toString () :String {
+		return "[IntRect] { x:" + x + ", y:" + y + ", width:" + width + ", height:" + height + " }";
+	}
+	
 }

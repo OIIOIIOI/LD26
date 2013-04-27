@@ -1,5 +1,6 @@
 package ;
 import flash.display.BitmapData;
+import flash.geom.Rectangle;
 import utils.Rand;
 import Data;
 
@@ -10,20 +11,20 @@ import Data;
 
 class MapData extends BitmapData {
 	
-	static public var C_GROUND:UInt =	0xFFFFFF;
-	static public var C_ROCK:UInt =		0x000000;
-	static public var C_ORE:UInt =		0xFF0000;
+	static public var C_GROUND:UInt =	0xE3C457;
+	static public var C_ROCK:UInt =		0x3F4658;
+	static public var C_ORE:UInt =		0x2D3240;
 	
 	static var RAND:Rand;
 	
 	public function new (seed:Int) {
 		
-		super(Game.MAP_SIZE.width, Game.MAP_SIZE.height, false);
+		super(Game.MAP_SIZE.width, Game.MAP_SIZE.height, false, 0xE3C457);
 		
 		RAND = new Rand(seed);
 		
-		for (i in 0...50)	spawnOre();
-		for (i in 0...20)	spawnDefault(E_Type.Rock);
+		for (i in 0...70)	spawnOre();
+		for (i in 0...50)	spawnDefault(E_Type.Rock);
 	}
 	
 	public function spawnDefault (type:E_Type) {
@@ -54,9 +55,9 @@ class MapData extends BitmapData {
 	
 	static function getColor (type:E_Type) : UInt {
 		return switch (type) {
-			case E_Type.Ground:		C_GROUND;
+			case E_Type.Ground:	C_GROUND;
 			case E_Type.Rock:	C_ROCK;
-			case E_Type.Ore:		C_ORE;
+			case E_Type.Ore:	C_ORE;
 		}
 	}
 	
