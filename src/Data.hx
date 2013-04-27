@@ -17,4 +17,6 @@ enum E_Type {
 	Ground;
 	Rock;
 	Ore;
+	Bush;
+	Rift;
 }
