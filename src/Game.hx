@@ -23,7 +23,7 @@ class Game extends Sprite {
 		MAP_SIZE = new IntRect(0, 0, 32, 32);
 		RAND = new Rand(1239874560);
 		
-		Data.init();
+		//Data.init();
 		
 		var bd:Bitmap = new Bitmap(new MapData(0));
 		bd.scaleX = bd.scaleY = 8;

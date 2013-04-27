@@ -22,16 +22,8 @@ class MapData extends BitmapData {
 		
 		RAND = new Rand(seed);
 		
-		for (r in Data.MAP_RESOURCES) {
-			switch (r) {
-				case E_Type.Ore(c):
-					for (i in 0...c)	spawnOre();
-				case E_Type.Rock(c):
-					for (i in 0...c)	spawnRock();
-				default:
-					spawnDefault(r);
-			}
-		}
+		for (i in 0...50)	spawnOre();
+		for (i in 0...20)	spawnDefault(E_Type.Rock);
 	}
 	
 	public function spawnDefault (type:E_Type) {
@@ -52,18 +44,19 @@ class MapData extends BitmapData {
 	}
 	
 	public function spawnRock () {
-		spawnDefault(E_Type.Rock(0));
+		spawnDefault(E_Type.Rock);
 	}
 	
 	public function spawnOre () {
-		var color = getColor(E_Type.Ore);
+		//var color = getColor(E_Type.Ore);
+		spawnDefault(E_Type.Ore);
 	}
 	
 	static function getColor (type:E_Type) : UInt {
 		return switch (type) {
 			case E_Type.Ground:		C_GROUND;
-			case E_Type.Rock(c):	C_ROCK;
-			case E_Type.Ore(c):		C_ORE;
+			case E_Type.Rock:	C_ROCK;
+			case E_Type.Ore:		C_ORE;
 		}
 	}
 	
