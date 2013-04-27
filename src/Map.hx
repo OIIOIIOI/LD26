@@ -123,17 +123,16 @@ class Map extends Sprite {
 			for (x in 0...Game.REAL_MAP_SIZE.width) {
 				Game.TAP.x = x * Game.TILE_SIZE;
 				Game.TAP.y = y * Game.TILE_SIZE;
-				// Base ground
-				FrameManager.copyFrame(data, "ground", "tiles", Game.TAP);
 				// Additional graph
-				switch (MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y))) {
-					case E_Type.Ore:
-						FrameManager.copyFrame(data, "ore", "tiles", Game.TAP);
-					case E_Type.Rock:
-						FrameManager.copyFrame(data, "rock", "tiles", Game.TAP);
-					//case E_Type.Ground:
-						//FrameManager.copyFrame(data, "ground", "tiles", Game.TAP);
+				var t = MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y));
+				switch (t) {
+					case E_Type.Ore, E_Type.Rock, E_Type.Bush:
+						FrameManager.copyFrame(data, getTile(E_Type.Ground), "tiles", Game.TAP);
+						FrameManager.copyFrame(data, getTile(t), "tiles", Game.TAP);
+					case E_Type.Rift:
+						FrameManager.copyFrame(data, getTile(t), "tiles", Game.TAP);
 					default:
+						FrameManager.copyFrame(data, getTile(E_Type.Ground), "tiles", Game.TAP);
 				}
 			}
 		}
@@ -159,6 +158,8 @@ class Map extends Sprite {
 			case E_Type.Ground:	"ground";
 			case E_Type.Rock:	"rock";
 			case E_Type.Ore:	"ore";
+			case E_Type.Bush:	"bush";
+			case E_Type.Rift:	"rift";
 			default: "";
 		}
 	}

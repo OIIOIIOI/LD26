@@ -37,7 +37,7 @@ class MapData extends BitmapData {
 		perlmap.threshold(perlmap, perlmap.rect, new Point(), ">", 0xFF808080, 0x00FFFFFF);
 		
 		rockperlmap = new BitmapData(Game.MAP_SIZE.width, Game.MAP_SIZE.height, true);
-		rockperlmap.perlinNoise(rockperlmap.width / 5, rockperlmap.height / 5, 1, RAND.random(50000000), false, true, 7, true);
+		rockperlmap.perlinNoise(10, 10, 1, RAND.random(50000000), false, true, 7, true);
 		riftperlmap = rockperlmap.clone();
 		
 		
@@ -48,8 +48,10 @@ class MapData extends BitmapData {
 			
 		spawnRock();
 		spawnRift();
-		for (i in 0...30)	spawnOre();
-		for (i in 0...(RAND.random(20)+80))	spawnBush();
+		
+		var surface = Game.MAP_SIZE.width * Game.MAP_SIZE.height;
+		for (i in 0...Std.int(surface*0.005))	spawnOre();
+		for (i in 0...Std.int(surface*0.03))	spawnBush();
 	}
 	
 	public function spawnDefault (type:E_Type,perlcon:Bool,perlconBW:UInt){

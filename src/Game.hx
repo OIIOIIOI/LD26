@@ -34,7 +34,7 @@ class Game extends Sprite {
 		super();
 		
 		SIZE = new IntRect(0, 0, 600, 600);
-		MAP_SIZE = new IntRect(0, 0, 32, 32);
+		MAP_SIZE = new IntRect(0, 0, 64, 64);
 		TILE_SIZE = 40;
 		REAL_MAP_SIZE = new IntRect(0, 0, Std.int(SIZE.width / TILE_SIZE) + 4, Std.int(SIZE.height / TILE_SIZE) + 4);
 		RAND = new Rand(1239874560);
@@ -51,11 +51,11 @@ class Game extends Sprite {
 		map.render(new IntPoint(ox, oy));
 		addChild(map);
 		
-		/*var bd:Bitmap = new Bitmap(mapData);
-		bd.alpha = 0.5;
-		bd.scaleX = bd.scaleY = 6;
+		var bd:Bitmap = new Bitmap(mapData);
+		bd.alpha = 0.7;
+		bd.scaleX = bd.scaleY = 4;
 		bd.x = Game.SIZE.width - bd.width;
-		addChild(bd);*/
+		addChild(bd);
 		
 		//addEventListener(Event.ENTER_FRAME, update);
 		
