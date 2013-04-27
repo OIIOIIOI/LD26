@@ -159,6 +159,7 @@ class Map extends Sprite {
 			case E_Type.Ground:	"ground";
 			case E_Type.Rock:	"rock";
 			case E_Type.Ore:	"ore";
+			default: "";
 		}
 	}
 	
