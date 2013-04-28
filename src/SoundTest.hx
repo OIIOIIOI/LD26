@@ -58,9 +58,9 @@ class SoundTest extends Sprite {
 		
 		common.c = common.s.play(0, 99);
 		menu.c = menu.s.play(0, 99);
-		//menu.c.soundTransform = new SoundTransform(0);
+		menu.c.soundTransform = new SoundTransform(0);
 		explo.c = explo.s.play(0, 99);
-		explo.c.soundTransform = new SoundTransform(0);
+		//explo.c.soundTransform = new SoundTransform(0);
 		water.c = water.s.play(0, 99);
 		water.c.soundTransform = new SoundTransform(0);
 		
@@ -84,6 +84,8 @@ class SoundTest extends Sprite {
 		sp.s.loadCompressedDataFromByteArray(data.getData(), data.length);
 		SOUNDS.set("SndCut", sp);
 		
+		//FTimer.delay(test, 30);
+		
 		robot = new Sprite();
 		robot.graphics.beginFill(0x000000);
 		robot.graphics.drawRect(0, 0, 40, 40);
@@ -95,7 +97,16 @@ class SoundTest extends Sprite {
 		locked = delayed = false;
 		
 		addEventListener(Event.ENTER_FRAME, update);
-		//FTimer.delay(simulateEvent, 12);
+		FTimer.delay(simulateEvent, 12);
+	}
+	
+	function test () {
+		var data = Resource.getBytes("SndTest");
+		var s = new Sound();
+		s.loadCompressedDataFromByteArray(data.getData(), data.length);
+		s.play(0, 0, new SoundTransform(1));//1, 1.2 taillage, 0.85 coulage
+		
+		FTimer.delay(test, 90);
 	}
 	
 	function lockKeys () {
@@ -178,7 +189,7 @@ class SoundTest extends Sprite {
 		}
 		else delayed = false;
 		tick++;
-		//FTimer.delay(simulateEvent, 10);
+		FTimer.delay(simulateEvent, 10);
 	}
 	
 	function playSnd (s:String) {

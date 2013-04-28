@@ -4,6 +4,7 @@ import anim.FrameManager;
 import Data;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
+import flash.display.Shape;
 import flash.display.Sprite;
 
 /**
@@ -26,6 +27,8 @@ class Entity extends Sprite {
 	var bd:BitmapData;
 	var b:Bitmap;
 	
+	var shadow:Shape;
+	
 	public function new (type:E_Entity) {
 		super();
 		
@@ -46,6 +49,12 @@ class Entity extends Sprite {
 	}
 	
 	public function initGraphics () {
+		shadow = new Shape();
+		shadow.graphics.beginFill(0x000000, 0.2);
+		shadow.graphics.drawEllipse(0, 33, 40, 14);
+		shadow.graphics.endFill();
+		addChild(shadow);
+		//
 		bd = new BitmapData(w, h, true, 0x33FF00FF);
 		b = new Bitmap(bd);
 		if (frames.length > 0) {
