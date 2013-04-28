@@ -104,8 +104,8 @@ class Map extends Sprite {
 				var t = MapData.getType(gp(realX, realY));
 				switch (t) {
 					case E_Type.Ore, E_Type.Bush:
-						FrameManager.copyFrame(data, getTile(E_Type.Ground, uid), Game.SHEET_TILES, Game.TAP);
-						FrameManager.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
+						FM.copyFrame(data, getTile(E_Type.Ground, uid), Game.SHEET_TILES, Game.TAP);
+						FM.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
 					case E_Type.Rock:
 						rockIDnum = 0;
 						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y - 1)) == E_Type.Rock)	rockIDnum += 1;
@@ -120,8 +120,8 @@ class Map extends Sprite {
 							else if (MapData.getType(gp(realX + 1, realY + 1)) != E_Type.Rock) { rockIDnum += 4;}
 						}
 						
-						FrameManager.copyFrame(data, getTile(E_Type.Ground, uid), Game.SHEET_TILES, Game.TAP);
-						FrameManager.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
+						FM.copyFrame(data, getTile(E_Type.Ground, uid), Game.SHEET_TILES, Game.TAP);
+						FM.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
 					case E_Type.Rift:
 						rockIDnum = 0;
 						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y - 1)) == E_Type.Rift)	rockIDnum += 1;
@@ -147,7 +147,7 @@ class Map extends Sprite {
 						FrameManager.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
 						
 					default:
-						FrameManager.copyFrame(data, getTile(E_Type.Ground, uid), Game.SHEET_TILES, Game.TAP);
+						FM.copyFrame(data, getTile(E_Type.Ground, uid), Game.SHEET_TILES, Game.TAP);
 				}
 			}
 		}
