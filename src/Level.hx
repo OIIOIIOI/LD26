@@ -91,9 +91,9 @@ class Level extends Sprite {
 	}
 	
 	function moveRobot (p:IntPoint) :IntPoint {
-		trace((p.x != 0) + " / " + (robot.xTarget != robotCenter.x));
+		//trace((p.x != 0) + " / " + (robot.xTarget != robotCenter.x));
 		if (p.x != 0 && robot.xTarget != robotCenter.x) {
-			trace("move robot");
+			//trace("move robot");
 			var newPosX:Float = robot.xTarget + p.x * Game.TILE_SIZE;
 			newPosX = Math.max(-container.x, newPosX);
 			newPosX = Math.min((Game.REAL_MAP_SIZE.width - 1) * Game.TILE_SIZE + container.x, newPosX);
@@ -147,13 +147,13 @@ class Level extends Sprite {
 		
 		if (sx != 0 || sy != 0) {
 			// Place the robot back in the center if possible
-			trace("from input " + sx + ", " + sy);
+			//trace("from input " + sx + ", " + sy);
 			var p = moveRobot(new IntPoint(sx, sy));
-			trace("after move robot " + p);
+			//trace("after move robot " + p);
 			// Scroll the map if possible
 			if (p.x != 0 || p.y != 0) {
 				p = map.scroll(p);
-				trace("after map scroll " + p);
+				//trace("after map scroll " + p);
 			}
 			// If there still is scroll left, move the robot
 			if (p.x != 0) {
@@ -162,7 +162,7 @@ class Level extends Sprite {
 				newPosX = Math.min((Game.REAL_MAP_SIZE.width - 1) * Game.TILE_SIZE + container.x, newPosX);
 				if (newPosX != robot.xTarget) {
 					robot.xTarget = Std.int(newPosX);
-					trace("moved robot");
+					//trace("moved robot");
 				}
 			}
 			if (p.y != 0) {
@@ -171,7 +171,7 @@ class Level extends Sprite {
 				newPosY = Math.min((Game.REAL_MAP_SIZE.height - 1) * Game.TILE_SIZE + container.y, newPosY);
 				if (newPosY != robot.yTarget) {
 					robot.yTarget = Std.int(newPosY);
-					trace("moved robot");
+					//trace("moved robot");
 				}
 			}
 		}
@@ -182,7 +182,7 @@ class Level extends Sprite {
 	function eventHandler (e:GameEvent) {
 		switch (e.type) {
 			case GE.SPAWN_ENTITY:
-				trace("spawnEntity");
+				//trace("spawnEntity");
 		}
 	}
 	

@@ -109,7 +109,7 @@ class Map extends Sprite {
 					case E_Type.Rock:
 						rockIDnum = 0;
 						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y - 1)) == E_Type.Rock)	rockIDnum += 1;
-						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x - 1, scrollPoint.y + y))== E_Type.Rock)		rockIDnum += 8;	
+						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x - 1, scrollPoint.y + y))== E_Type.Rock)		rockIDnum += 8;
 						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x + 1, scrollPoint.y + y))== E_Type.Rock)		rockIDnum += 2;
 						if (MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y + 1)) == E_Type.Rock)	rockIDnum += 4;
 						
@@ -125,14 +125,14 @@ class Map extends Sprite {
 					case E_Type.Rift:
 						rockIDnum = 0;
 						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y - 1)) == E_Type.Rift)	rockIDnum += 1;
-						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x - 1, scrollPoint.y + y))== E_Type.Rift)		rockIDnum += 8;	
+						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x - 1, scrollPoint.y + y))== E_Type.Rift)		rockIDnum += 8;
 						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x + 1, scrollPoint.y + y))== E_Type.Rift)		rockIDnum += 2;
 						if (MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y + 1)) == E_Type.Rift)	rockIDnum += 4;
 						
 						if (rockIDnum == 2) {
 							if (MapData.getType(pixelData.getPixel(scrollPoint.x + x + 1, scrollPoint.y + y - 1))== E_Type.Rift) {
 								rockIDnum = 0;
-								trace("water 2 changed");
+								//trace("water 2 changed");
 							}
 						}
 						
@@ -160,8 +160,8 @@ class Map extends Sprite {
 		else				rand = new Rand(123456);
 		return switch (type) {
 			case E_Type.Ground:	"ground" + rand.random(3);
-			//case E_Type.Rock:	"rock"+ rockIDnum;
-			case E_Type.Rock:	"rock0";
+			case E_Type.Rock:	"rock"+ rockIDnum;
+			//case E_Type.Rock:	"rock0";
 			case E_Type.Ore:	"ore0";
 			case E_Type.Bush:	"bush0";
 			case E_Type.Rift:	"water"+ rockIDnum;

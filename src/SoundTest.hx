@@ -105,15 +105,15 @@ class SoundTest extends Sprite {
 	private function update (e:Event) {
 		if (!locked) {
 			if (KM.isDown(Keyboard.UP)) {
-				trace("Menu <-> Explo");
+				//trace("Menu <-> Explo");
 				switchTrack(menu.c, explo.c);
 			}
 			if (KM.isDown(Keyboard.RIGHT)) {
-				trace("Explo <-> Water");
+				//trace("Explo <-> Water");
 				switchTrack(explo.c, water.c);
 			}
 			if (KM.isDown(Keyboard.LEFT)) {
-				trace("Menu <-> Water");
+				//trace("Menu <-> Water");
 				switchTrack(menu.c, water.c);
 			}
 		}

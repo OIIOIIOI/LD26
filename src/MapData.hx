@@ -56,7 +56,6 @@ class MapData extends BitmapData {
 	
 	public function spawnDefault (type:E_Type,perlcon:Bool,perlconBW:UInt){
 		var color = getColor(type);
-
 		var x = RAND.random(width);
 		var y = RAND.random(height);
 		
