@@ -55,16 +55,18 @@ class Level extends Sprite {
 		scrollFloat = new Point();
 		
 		var mapData = new MapData(3586);
-		/*var minimap = new Bitmap(mapData);
+		
+		var minimap = new Bitmap(mapData);
 		minimap.x = Game.SIZE.width - mapData.width;
 		minimap.y = Game.SIZE.height - mapData.height;
-		dm.add(minimap, FX_DEPTH);*/
+		minimap.scaleX = minimap.scaleY = 2;
+		dm.add(minimap, FX_DEPTH);
 		
 		container.x = (Game.SIZE.width / Game.TILE_SIZE - Game.REAL_MAP_SIZE.width) / 2 * Game.TILE_SIZE;
 		container.y = (Game.SIZE.height / Game.TILE_SIZE - Game.REAL_MAP_SIZE.height) / 2 * Game.TILE_SIZE;
 		
 		map = new Map(mapData);
-		map.render(new IntPoint());
+		map.render(new IntPoint(25, 25));
 		dm.add(map, MAP_DEPTH);
 		
 		entities = new Array<Entity>();
@@ -85,7 +87,6 @@ class Level extends Sprite {
 		for (e in entities) {
 			e.update();
 		}
-		
 		map.update();
 	}
 	
@@ -143,23 +144,32 @@ class Level extends Sprite {
 		else if (KeyboardManager.isDown(Keyboard.DOWN))	sy += 1;
 		if (sx != 0 || sy != 0) {
 			// Place the robot back in the center if possible
+			trace("from input " + sx + ", " + sy);
 			var p = moveRobot(new IntPoint(sx, sy));
+			trace("after move robot " + p);
 			// Scroll the map if possible
 			if (p.x != 0 || p.y != 0) {
 				p = map.scroll(p);
+				trace("after map scroll " + p);
 			}
 			// If there still is scroll left, move the robot
 			if (p.x != 0) {
 				var newPosX:Float = robot.xTarget + p.x * Game.TILE_SIZE;
 				newPosX = Math.max(-container.x, newPosX);
 				newPosX = Math.min((Game.REAL_MAP_SIZE.width - 1) * Game.TILE_SIZE + container.x, newPosX);
-				if (newPosX != robot.xTarget)	robot.xTarget = Std.int(newPosX);
+				if (newPosX != robot.xTarget) {
+					robot.xTarget = Std.int(newPosX);
+					trace("moved robot");
+				}
 			}
 			if (p.y != 0) {
 				var newPosY:Float = robot.yTarget + p.y * Game.TILE_SIZE;
 				newPosY = Math.max(-container.y, newPosY);
 				newPosY = Math.min((Game.REAL_MAP_SIZE.height - 1) * Game.TILE_SIZE + container.y, newPosY);
-				if (newPosY != robot.yTarget)	robot.yTarget = Std.int(newPosY);
+				if (newPosY != robot.yTarget) {
+					robot.yTarget = Std.int(newPosY);
+					trace("moved robot");
+				}
 			}
 		}
 		

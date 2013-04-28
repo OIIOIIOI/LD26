@@ -41,6 +41,7 @@ class Map extends Sprite {
 	}
 	
 	public function scroll (p:IntPoint) :IntPoint {
+		trace(scrollPoint + " / " + current);
 		if (current.x + p.x >= 0 && current.x + p.x < pixelData.width - Game.REAL_MAP_SIZE.width) {
 			target.x = current.x + p.x;
 			p.x = 0;
@@ -53,29 +54,36 @@ class Map extends Sprite {
 	}
 	
 	public function update () {
-		var allowRender = false;
+		//var allowRender = false;
+		var renderX = 0;
+		var renderY = 0;
 		
 		if (target.x != current.x) {
 			var xTarget = (target.x > current.x) ? -Game.TILE_SIZE : Game.TILE_SIZE;
 			if (Math.abs(bitmap.x - xTarget) < Game.SMOOTH_CUT) {
-				bitmap.x = xTarget;
+				bitmap.x = xTarget = 0;
+				trace("-> " + bitmap.x);
+				if (target.x > current.x)	drawLine(-1);
+				else						drawLine(1);
 				current.x = target.x;
-				allowRender = true;
+				//allowRender = true;
 			}
 			else bitmap.x -= (bitmap.x - xTarget) * Game.SMOOTH_MOD;
 		}
 		
-		if (target.y != current.y) {
+		/*if (target.y != current.y) {
 			var yTarget = (target.y > current.y) ? -Game.TILE_SIZE : Game.TILE_SIZE;
 			if (Math.abs(bitmap.y - yTarget) < Game.SMOOTH_CUT) {
+				if (target.y > current.y)	drawLine(0, 1);
+				else						drawLine(0, -1);
 				bitmap.y = yTarget;
 				current.y = target.y;
 				allowRender = true;
 			}
 			else bitmap.y -= (bitmap.y - yTarget) * Game.SMOOTH_MOD;
-		}
+		}*/
 		
-		if (allowRender)	render(current);
+		//if (allowRender)	render(current);
 		
 		/*if (target.x != current.x || target.y != current.y) {
 			current.x = target.x;
@@ -86,22 +94,41 @@ class Map extends Sprite {
 	
 	function drawLine (h:Int = 0, v:Int = 0) {
 		if (h != 0) {
-			Game.TAR.x = Game.TAR.y = 0;
+			if (h < 0)	data.scroll(-Game.TILE_SIZE, 0);
+			else		data.scroll(Game.TILE_SIZE, 0);
+			//scrollPoint.x = scrollPoint.x - 1;
+			bitmap.x = 0;
+			//bitmap.x -= Game.TILE_SIZE * h;
+			
+			/*Game.TAR.x = Game.TAR.y = 0;
 			Game.TAR.width = Game.TILE_SIZE;
 			Game.TAR.height = Game.REAL_MAP_SIZE.height * Game.TILE_SIZE;
 			var m = new Matrix();
 			m.translate(-scrollPoint.x, -scrollPoint.y);
 			m.scale(Game.TILE_SIZE, Game.TILE_SIZE);
-			data.draw(pixelData, m);
+			data.draw(pixelData, m, null, null, Game.TAR);*/
+			
+			trace("DRAWLINE " + h + " / " + bitmap.x);
+			
+			/*Game.TAR.x = Game.TAR.y = 0;
+			Game.TAR.width = Game.TILE_SIZE;
+			Game.TAR.height = Game.REAL_MAP_SIZE.height * Game.TILE_SIZE;
+			var m = new Matrix();
+			m.translate(-scrollPoint.x, -scrollPoint.y);
+			m.scale(Game.TILE_SIZE, Game.TILE_SIZE);
+			data.draw(pixelData, m);*/
 		}
 		if (v != 0) {
-			Game.TAR.x = Game.TAR.y = 0;
+			data.scroll(0, Game.TILE_SIZE * v);
+			bitmap.y -= Game.TILE_SIZE * v;
+			
+			/*Game.TAR.x = Game.TAR.y = 0;
 			Game.TAR.width = Game.REAL_MAP_SIZE.width * Game.TILE_SIZE;
 			Game.TAR.height = Game.TILE_SIZE;
 			var m = new Matrix();
 			m.translate(-scrollPoint.x, -scrollPoint.y);
 			m.scale(Game.TILE_SIZE, Game.TILE_SIZE);
-			data.draw(pixelData, m);
+			data.draw(pixelData, m);*/
 		}
 	}
 	

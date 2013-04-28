@@ -13,6 +13,7 @@ typedef CBObject = {
 	var once:Bool;
 }
 
+typedef KM = KeyboardManager;
 class KeyboardManager
 {
 	

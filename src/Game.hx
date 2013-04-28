@@ -28,7 +28,7 @@ class Game extends Sprite {
 	static public var MAP_SIZE:IntRect = new IntRect(0, 0, 64, 64);
 	static public var REAL_MAP_SIZE:IntRect;
 	static public var TILE_SIZE:Int = 40;
-	static public var TURN_DELAY:Int = 10;
+	static public var TURN_DELAY:Int = 20;
 	static public var SMOOTH_MOD:Float = 0.5;
 	static public var SMOOTH_CUT:Float = 0.3;
 	static public var RAND:Rand;
