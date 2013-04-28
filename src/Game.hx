@@ -1,6 +1,7 @@
 package ;
 
 import anim.FrameManager;
+import cards.Card;
 import cards.Deck;
 import flash.display.Bitmap;
 import flash.display.Sprite;
@@ -38,10 +39,12 @@ class Game extends Sprite {
 	static public var tick:Int;
 	
 	var level:Level;
-	var gamedeck:Deck;
+	
+	/*var gamedeck:Deck;
+	var chosenCard: Card;*/
 	
 	var map:Map;
-	
+		
 	
 	public function new () {
 		super();
@@ -59,6 +62,11 @@ class Game extends Sprite {
 		addChild(level);
 		
 		addEventListener(Event.ENTER_FRAME, update);
+		
+		/*gamedeck = new Deck();
+		chosenCard = gamedeck.getCard(3);
+		trace(chosenCard.type);*/
+		
 	}
 	
 	private function update (e:Event) {
