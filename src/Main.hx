@@ -14,8 +14,9 @@ class Main {
 	static function main () {
 		KeyboardManager.init(Lib.current.stage);
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-		//Lib.current.stage.align = StageAlign.TOP_LEFT;
-		Lib.current.stage.align = StageAlign.TOP;
+		Lib.current.stage.align = StageAlign.TOP_LEFT;
+		//Lib.current.stage.align = StageAlign.TOP;
+		
 		Lib.current.stage.addChild(new Game());
 		//Lib.current.stage.addChild(new SoundTest());
 	}

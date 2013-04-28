@@ -8,6 +8,7 @@ import flash.events.Event;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import haxe.Resource;
+import ui.State;
 import utils.FTimer;
 import utils.IntPoint;
 import utils.IntRect;
@@ -37,6 +38,8 @@ class Game extends Sprite {
 	
 	static public var tick:Int;
 	
+	static var state:E_State;
+	
 	var level:Level;
 	
 	//static public var testBitmap:Bitmap;
@@ -56,7 +59,7 @@ class Game extends Sprite {
 		
 		FrameManager.store(SHEET_TILES, new TilesBD(0, 0), Resource.getString("tilesJson"));
 		
-		//Data.init();
+		//selectState(E_State.ETitle);
 		
 		level = new Level();
 		addChild(level);
@@ -68,10 +71,15 @@ class Game extends Sprite {
 		trace(chosenCard.type);*/
 	}
 	
+	static public function selectState () {
+		
+	}
+	
 	private function update (e:Event) {
 		tick++;
 		FTimer.update();
-		level.update();
+		//state.update();
+		//level.update();
 	}
 	
 }
