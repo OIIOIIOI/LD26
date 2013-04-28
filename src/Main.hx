@@ -16,8 +16,8 @@ class Main {
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 		//Lib.current.stage.align = StageAlign.TOP_LEFT;
 		Lib.current.stage.align = StageAlign.TOP;
-		//Lib.current.stage.addChild(new Game());
-		Lib.current.stage.addChild(new SoundTest());
+		Lib.current.stage.addChild(new Game());
+		//Lib.current.stage.addChild(new SoundTest());
 	}
 	
 }
