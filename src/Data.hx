@@ -37,6 +37,11 @@ enum E_Card {
 	scie;
 	bouee;
 }
+enum E_CardStackType {
+	deck;
+	pioche;
+	jeu;
+}
 
 
 

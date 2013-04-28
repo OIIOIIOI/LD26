@@ -2,7 +2,7 @@ package ;
 
 import anim.FrameManager;
 import cards.Card;
-import cards.Deck;
+import cards.CardStack;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Point;
@@ -44,7 +44,7 @@ class Game extends Sprite {
 	
 	//static public var testBitmap:Bitmap;
 	
-	/*var gamedeck:Deck;
+	/*var gamedeck:CardStack;
 	var chosenCard: Card;*/
 	
 	var map:Map;
@@ -66,7 +66,7 @@ class Game extends Sprite {
 		
 		addEventListener(Event.ENTER_FRAME, update);
 		
-		/*gamedeck = new Deck();
+		/*gamedeck = new CardStack();
 		chosenCard = gamedeck.getCard(3);
 		trace(chosenCard.type);*/
 	}
