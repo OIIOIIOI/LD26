@@ -6,12 +6,12 @@
     <movie input="" />
     <movie path="bin\LD26.swf" />
     <movie fps="30" />
-    <movie width="600" />
+    <movie width="800" />
     <movie height="600" />
-    <movie version="10" />
-    <movie minorVersion="1" />
+    <movie version="11" />
+    <movie minorVersion="2" />
     <movie platform="Flash Player" />
-    <movie background="#DDDDDD" />
+    <movie background="#FFFFFF" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
@@ -23,7 +23,7 @@
     <option flashStrict="False" />
     <option mainClass="Main" />
     <option enabledebug="True" />
-    <option additional="-resource bin/tiles.json@tilesJson" />
+    <option additional="" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
