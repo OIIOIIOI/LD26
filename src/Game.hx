@@ -29,8 +29,8 @@ class Game extends Sprite {
 	static public var MAP_SIZE:IntRect = new IntRect(0, 0, 64, 64);
 	static public var REAL_MAP_SIZE:IntRect;
 	static public var TILE_SIZE:Int = 40;
-	static public var TURN_DELAY:Int = 20;
-	static public var SMOOTH_MOD:Float = 0.5;
+	static public var TURN_DELAY:Int = 10;
+	static public var SMOOTH_MOD:Float = 0.6;
 	static public var SMOOTH_CUT:Float = 0.3;
 	static public var RAND:Rand;
 	static public var TAP:Point = new Point();
@@ -40,11 +40,12 @@ class Game extends Sprite {
 	
 	var level:Level;
 	
+	static public var testBitmap:Bitmap;
+	
 	/*var gamedeck:Deck;
 	var chosenCard: Card;*/
 	
 	var map:Map;
-		
 	
 	public function new () {
 		super();
@@ -67,6 +68,8 @@ class Game extends Sprite {
 		chosenCard = gamedeck.getCard(3);
 		trace(chosenCard.type);*/
 		
+		testBitmap = new Bitmap();
+		addChild(testBitmap);
 	}
 	
 	private function update (e:Event) {

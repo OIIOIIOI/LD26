@@ -20,6 +20,7 @@ class SoundTest extends Sprite {
 	var menu:SoundPair;
 	var explo:SoundPair;
 	var water:SoundPair;
+	var common:SoundPair;
 	
 	var locked:Bool;
 	var delayed:Bool;
@@ -50,10 +51,16 @@ class SoundTest extends Sprite {
 		water.s = new Sound();
 		water.s.loadCompressedDataFromByteArray(data.getData(), data.length);
 		
+		data = Resource.getBytes("TrackCommon");
+		common = { s:null, c:null };
+		common.s = new Sound();
+		common.s.loadCompressedDataFromByteArray(data.getData(), data.length);
+		
+		common.c = common.s.play(0, 99);
 		menu.c = menu.s.play(0, 99);
-		menu.c.soundTransform = new SoundTransform(0);
+		//menu.c.soundTransform = new SoundTransform(0);
 		explo.c = explo.s.play(0, 99);
-		//explo.c.soundTransform = new SoundTransform(0);
+		explo.c.soundTransform = new SoundTransform(0);
 		water.c = water.s.play(0, 99);
 		water.c.soundTransform = new SoundTransform(0);
 		
@@ -88,7 +95,7 @@ class SoundTest extends Sprite {
 		locked = delayed = false;
 		
 		addEventListener(Event.ENTER_FRAME, update);
-		FTimer.delay(simulateEvent, 12);
+		//FTimer.delay(simulateEvent, 12);
 	}
 	
 	function lockKeys () {
@@ -171,14 +178,15 @@ class SoundTest extends Sprite {
 		}
 		else delayed = false;
 		tick++;
-		FTimer.delay(simulateEvent, 10);
+		//FTimer.delay(simulateEvent, 10);
 	}
 	
 	function playSnd (s:String) {
 		if (SOUNDS.exists(s)) {
 			change(0x00FF00);
 			delayed = true;
-			SOUNDS.get(s).c = SOUNDS.get(s).s.play(0, new SoundTransform(0.5));
+			//SOUNDS.get(s).c = SOUNDS.get(s).s.play(0, new SoundTransform(0.5));
+			SOUNDS.get(s).c = SOUNDS.get(s).s.play(0);
 		}
 	}
 	

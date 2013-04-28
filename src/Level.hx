@@ -91,7 +91,9 @@ class Level extends Sprite {
 	}
 	
 	function moveRobot (p:IntPoint) :IntPoint {
+		trace((p.x != 0) + " / " + (robot.xTarget != robotCenter.x));
 		if (p.x != 0 && robot.xTarget != robotCenter.x) {
+			trace("move robot");
 			var newPosX:Float = robot.xTarget + p.x * Game.TILE_SIZE;
 			newPosX = Math.max(-container.x, newPosX);
 			newPosX = Math.min((Game.REAL_MAP_SIZE.width - 1) * Game.TILE_SIZE + container.x, newPosX);
@@ -142,6 +144,7 @@ class Level extends Sprite {
 		else if (KeyboardManager.isDown(Keyboard.LEFT))	sx -= 1;
 		if (KeyboardManager.isDown(Keyboard.UP))		sy -= 1;
 		else if (KeyboardManager.isDown(Keyboard.DOWN))	sy += 1;
+		
 		if (sx != 0 || sy != 0) {
 			// Place the robot back in the center if possible
 			trace("from input " + sx + ", " + sy);

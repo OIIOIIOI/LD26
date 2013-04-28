@@ -23,7 +23,7 @@
     <option flashStrict="False" />
     <option mainClass="Main" />
     <option enabledebug="True" />
-    <option additional="-resource bin/tiles.json@tilesJson&#xA;-resource bin/snd/musiquemenu.mp3@TrackMenu&#xA;-resource bin/snd/musiqueprospect.mp3@TrackExplo&#xA;-resource bin/snd/musiqueeau.mp3@TrackWater&#xA;-resource bin/snd/Foreuse.mp3@SndMine&#xA;-resource bin/snd/pelletage.mp3@SndDig&#xA;-resource bin/snd/Taillage.mp3@SndCut" />
+    <option additional="-resource bin/tiles.json@tilesJson&#xA;-resource bin/snd/Menu.mp3@TrackMenu&#xA;-resource bin/snd/Prospection.mp3@TrackExplo&#xA;-resource bin/snd/Bubbles.mp3@TrackWater&#xA;-resource bin/snd/Tronc_commun.mp3@TrackCommon&#xA;-resource bin/snd/Foreuse.mp3@SndMine&#xA;-resource bin/snd/pelletage.mp3@SndDig&#xA;-resource bin/snd/Taillage.mp3@SndCut" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
