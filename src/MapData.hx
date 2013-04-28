@@ -50,8 +50,8 @@ class MapData extends BitmapData {
 		spawnRift();
 		
 		var surface = Game.MAP_SIZE.width * Game.MAP_SIZE.height;
-		for (i in 0...Std.int(surface*0.005))	spawnOre();
-		for (i in 0...Std.int(surface*0.03))	spawnBush();
+		for (i in 0...Std.int(surface*0.007))	spawnOre();
+		for (i in 0...Std.int(surface*0.05))	spawnBush();
 	}
 	
 	public function spawnDefault (type:E_Type,perlcon:Bool,perlconBW:UInt){
