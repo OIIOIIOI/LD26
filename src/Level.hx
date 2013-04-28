@@ -1,6 +1,7 @@
 package ;
 
 import anim.Animation;
+import Data;
 import entities.Entity;
 import entities.Robot;
 import events.EventManager;
@@ -78,7 +79,7 @@ class Level extends Sprite {
 		entities.push(robot);
 		dm.add(robot, PLAYER_DEPTH);
 		
-		EventManager.instance.addEventListener(GE.SPAWN_ENTITY, eventHandler);
+		//EventManager.instance.addEventListener(GE.SPAWN_ENTITY, eventHandler);
 		
 		FTimer.delay(nextTurn, Game.TURN_DELAY);
 	}
@@ -91,9 +92,21 @@ class Level extends Sprite {
 	}
 	
 	function moveRobot (p:IntPoint) :IntPoint {
-		//trace((p.x != 0) + " / " + (robot.xTarget != robotCenter.x));
+		var rxt = Std.int(robot.xTarget / Game.TILE_SIZE) + p.x + map.current.x;
+		var ryt = Std.int(robot.yTarget / Game.TILE_SIZE) + p.y + map.current.y;
+		
+		var tileType = MapData.getType(map.pixelData.getPixel(rxt, ryt));
+		switch (tileType) {
+			case E_Type.Rock:
+				map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.RockMined));
+			case E_Type.Ore, E_Type.Rift:
+				return new IntPoint();
+			case E_Type.Bush:
+				map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.BushCut));
+			default:
+		}
+		
 		if (p.x != 0 && robot.xTarget != robotCenter.x) {
-			//trace("move robot");
 			var newPosX:Float = robot.xTarget + p.x * Game.TILE_SIZE;
 			newPosX = Math.max(-container.x, newPosX);
 			newPosX = Math.min((Game.REAL_MAP_SIZE.width - 1) * Game.TILE_SIZE + container.x, newPosX);
@@ -114,46 +127,33 @@ class Level extends Sprite {
 		return p;
 	}
 	
-	/*function moveRobot (p:IntPoint) :IntPoint {
-		if (p.x != 0 && robot.x != robotCenter.x) {
-			var newPosX = robot.x + p.x * Game.TILE_SIZE;
-			newPosX = Math.max(-container.x, newPosX);
-			newPosX = Math.min((Game.REAL_MAP_SIZE.width - 1) * Game.TILE_SIZE + container.x, newPosX);
-			if (newPosX != robot.x) {
-				robot.x = newPosX;
-				p.x = 0;
-			}
-		}
-		if (p.y != 0 && robot.y != robotCenter.y) {
-			var newPosY = robot.y + p.y * Game.TILE_SIZE;
-			newPosY = Math.max(-container.y, newPosY);
-			newPosY = Math.min((Game.REAL_MAP_SIZE.height - 1) * Game.TILE_SIZE + container.y, newPosY);
-			if (newPosY != robot.y) {
-				robot.y = newPosY;
-				p.y = 0;
-			}
-		}
-		return p;
-	}*/
-	
 	function nextTurn () {
 		
 		var sx = 0;
 		var sy = 0;
-		if (KeyboardManager.isDown(Keyboard.RIGHT))		sx += 1;
-		else if (KeyboardManager.isDown(Keyboard.LEFT))	sx -= 1;
-		if (KeyboardManager.isDown(Keyboard.UP))		sy -= 1;
-		else if (KeyboardManager.isDown(Keyboard.DOWN))	sy += 1;
+		if (KeyboardManager.isDown(Keyboard.RIGHT)) {
+			robot.facing = Robot.FACING_RIGHT;
+			sx += 1;
+		}
+		else if (KeyboardManager.isDown(Keyboard.LEFT)) {
+			robot.facing = Robot.FACING_LEFT;
+			sx -= 1;
+		}
+		if (KeyboardManager.isDown(Keyboard.UP)) {
+			robot.facing = Robot.FACING_UP;
+			sy -= 1;
+		}
+		else if (KeyboardManager.isDown(Keyboard.DOWN)) {
+			robot.facing = Robot.FACING_DOWN;
+			sy += 1;
+		}
 		
 		if (sx != 0 || sy != 0) {
 			// Place the robot back in the center if possible
-			//trace("from input " + sx + ", " + sy);
 			var p = moveRobot(new IntPoint(sx, sy));
-			//trace("after move robot " + p);
 			// Scroll the map if possible
 			if (p.x != 0 || p.y != 0) {
 				p = map.scroll(p);
-				//trace("after map scroll " + p);
 			}
 			// If there still is scroll left, move the robot
 			if (p.x != 0) {
@@ -162,7 +162,6 @@ class Level extends Sprite {
 				newPosX = Math.min((Game.REAL_MAP_SIZE.width - 1) * Game.TILE_SIZE + container.x, newPosX);
 				if (newPosX != robot.xTarget) {
 					robot.xTarget = Std.int(newPosX);
-					//trace("moved robot");
 				}
 			}
 			if (p.y != 0) {
@@ -171,20 +170,18 @@ class Level extends Sprite {
 				newPosY = Math.min((Game.REAL_MAP_SIZE.height - 1) * Game.TILE_SIZE + container.y, newPosY);
 				if (newPosY != robot.yTarget) {
 					robot.yTarget = Std.int(newPosY);
-					//trace("moved robot");
 				}
 			}
 		}
-		
 		FTimer.delay(nextTurn, Game.TURN_DELAY);
 	}
 	
-	function eventHandler (e:GameEvent) {
+	/*function eventHandler (e:GameEvent) {
 		switch (e.type) {
 			case GE.SPAWN_ENTITY:
 				//trace("spawnEntity");
 		}
-	}
+	}*/
 	
 }
 

@@ -18,12 +18,12 @@ import utils.Rand;
 
 class Map extends Sprite {
 	
-	var pixelData:BitmapData;
+	public var pixelData:BitmapData;
 	var data:BitmapData;
 	var bitmap:Bitmap;
 	
 	var target:IntPoint;
-	var current:IntPoint;
+	public var current:IntPoint;
 	
 	var scrollPoint:IntPoint;
 	
@@ -103,7 +103,7 @@ class Map extends Sprite {
 				// Additional graph
 				var t = MapData.getType(gp(realX, realY));
 				switch (t) {
-					case E_Type.Ore, E_Type.Bush:
+					case E_Type.Ore, E_Type.Bush, E_Type.BushCut, E_Type.RockMined:
 						FM.copyFrame(data, getTile(E_Type.Ground, uid), Game.SHEET_TILES, Game.TAP);
 						FM.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
 					case E_Type.Rock:
@@ -165,9 +165,11 @@ class Map extends Sprite {
 		return switch (type) {
 			case E_Type.Ground:	"ground" + rand.random(3);
 			case E_Type.Rock:	"rock"+ rockIDnum;
+			case E_Type.RockMined:	"oreMined0";
 			//case E_Type.Rock:	"rock0";
 			case E_Type.Ore:	"ore0";
 			case E_Type.Bush:	"bush0";
+			case E_Type.BushCut:"bush0Cut";
 			case E_Type.Rift:	"water"+ rockIDnum;
 			default: "";
 		}

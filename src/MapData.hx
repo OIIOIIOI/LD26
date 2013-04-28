@@ -14,8 +14,10 @@ class MapData extends BitmapData {
 	
 	static public var C_GROUND:UInt =	0xFFFFFF;
 	static public var C_ROCK:UInt =		0x000000;
+	static public var C_ROCKMINED:UInt =0x111111;
 	static public var C_ORE:UInt =		0xFF0000;
 	static public var C_BUSH:UInt =		0x00FF00;
+	static public var C_BUSHCUT:UInt =	0x00DD00;
 	static public var C_RIFT:UInt =		0x0000FF;
 	
 	static var RAND:Rand;
@@ -110,12 +112,14 @@ class MapData extends BitmapData {
 		spawnDefault(E_Type.Ore,false,0);
 	}
 	
-	static function getColor (type:E_Type) : UInt {
+	static public function getColor (type:E_Type) : UInt {
 		return switch (type) {
 			case E_Type.Ground:	C_GROUND;
 			case E_Type.Rock:	C_ROCK;
+			case E_Type.RockMined:	C_ROCKMINED;
 			case E_Type.Ore:	C_ORE;
 			case E_Type.Bush:	C_BUSH;
+			case E_Type.BushCut:C_BUSHCUT;
 			case E_Type.Rift:	C_RIFT;
 		}
 	}
@@ -123,8 +127,10 @@ class MapData extends BitmapData {
 	static public function getType (color:UInt) :E_Type {
 		return switch (color) {
 			case C_ROCK:	E_Type.Rock;
+			case C_ROCKMINED:	E_Type.RockMined;
 			case C_ORE:		E_Type.Ore;
 			case C_BUSH:	E_Type.Bush;
+			case C_BUSHCUT:	E_Type.BushCut;
 			case C_RIFT:	E_Type.Rift;
 			default:	E_Type.Ground;
 		}

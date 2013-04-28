@@ -3,7 +3,6 @@ package ;
 import anim.FrameManager;
 import cards.Card;
 import cards.Deck;
-import flash.display.Bitmap;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Point;
@@ -40,7 +39,7 @@ class Game extends Sprite {
 	
 	var level:Level;
 	
-	static public var testBitmap:Bitmap;
+	//static public var testBitmap:Bitmap;
 	
 	/*var gamedeck:Deck;
 	var chosenCard: Card;*/
@@ -67,9 +66,6 @@ class Game extends Sprite {
 		/*gamedeck = new Deck();
 		chosenCard = gamedeck.getCard(3);
 		trace(chosenCard.type);*/
-		
-		testBitmap = new Bitmap();
-		addChild(testBitmap);
 	}
 	
 	private function update (e:Event) {
