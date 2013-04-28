@@ -114,7 +114,11 @@ class Map extends Sprite {
 				// Additional graph
 				var t = MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y));
 				switch (t) {
-					case E_Type.Ore, E_Type.Rock, E_Type.Bush:
+					case E_Type.Ore, E_Type.Bush:
+						FrameManager.copyFrame(data, getTile(E_Type.Ground), Game.SHEET_TILES, Game.TAP);
+						FrameManager.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
+					case E_Type.Rock:
+						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y-1))== E_Type.)
 						FrameManager.copyFrame(data, getTile(E_Type.Ground), Game.SHEET_TILES, Game.TAP);
 						FrameManager.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
 					case E_Type.Rift:

@@ -25,6 +25,17 @@ enum E_Entity {
 	ERobot;
 }
 
+enum E_Card {
+	avancerhaut;
+	avancerbas;
+	avancergauche;
+	avancerdroite;
+	creuser;
+	foreuse;
+	scie;
+	bouee;
+}
+
 
 
 

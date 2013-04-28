@@ -23,7 +23,7 @@
     <option flashStrict="False" />
     <option mainClass="Main" />
     <option enabledebug="True" />
-    <option additional="" />
+    <option additional="-resource bin/tiles.json@tilesJson" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
