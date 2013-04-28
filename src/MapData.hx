@@ -89,8 +89,8 @@ class MapData extends BitmapData {
 	}
 	
 	public function spawnRock () {
-		rockperlmap.threshold(rockperlmap, rockperlmap.rect, new Point(), "<=", 0xFF606060,0xFF000000+C_ROCK);
-		rockperlmap.threshold(rockperlmap, rockperlmap.rect, new Point(), ">", 0xFF606060, 0x00FFFFFF);
+		rockperlmap.threshold(rockperlmap, rockperlmap.rect, new Point(), "<=", 0xFF666666,0xFF000000+C_ROCK);
+		rockperlmap.threshold(rockperlmap, rockperlmap.rect, new Point(), ">", 0xFF666666, 0x00FFFFFF);
 		draw(rockperlmap);
 	}
 	

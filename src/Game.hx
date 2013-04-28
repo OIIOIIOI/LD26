@@ -1,14 +1,15 @@
 package ;
 
 import anim.FrameManager;
-import cards.Card;
-import cards.Deck;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import haxe.Resource;
+import ui.ExploState;
+import ui.PrepaState;
 import ui.State;
+import ui.TitleState;
 import utils.FTimer;
 import utils.IntPoint;
 import utils.IntRect;
@@ -37,49 +38,50 @@ class Game extends Sprite {
 	static public var TAR:Rectangle = new Rectangle();
 	
 	static public var tick:Int;
+	static public var me:Game;
 	
-	static var state:E_State;
+	public var currentState:State;
 	
-	var level:Level;
-	
-	//static public var testBitmap:Bitmap;
-	
-	/*var gamedeck:Deck;
-	var chosenCard: Card;*/
-	
-	var map:Map;
+	public var titleState:TitleState;
+	public var prepaState:PrepaState;
+	public var exploState:ExploState;
 	
 	public function new () {
 		super();
 		
-		REAL_MAP_SIZE = new IntRect(0, 0, Std.int(SIZE.width / TILE_SIZE) + 4, Std.int(SIZE.height / TILE_SIZE) + 4);
-		RAND = new Rand(1239874560);
+		me = this;
 		
-		tick = 0;
+		REAL_MAP_SIZE = new IntRect(0, 0, Std.int(SIZE.width / TILE_SIZE) + 4, Std.int(SIZE.height / TILE_SIZE) + 4);
+		RAND = new Rand(123874560);
 		
 		FrameManager.store(SHEET_TILES, new TilesBD(0, 0), Resource.getString("tilesJson"));
 		
-		//selectState(E_State.ETitle);
+		new Level();
 		
-		level = new Level();
-		addChild(level);
+		titleState = new TitleState();
+		prepaState = new PrepaState();
+		exploState = new ExploState();
 		
+		selectState(titleState);
+		
+		tick = 0;
 		addEventListener(Event.ENTER_FRAME, update);
-		
-		/*gamedeck = new Deck();
-		chosenCard = gamedeck.getCard(3);
-		trace(chosenCard.type);*/
 	}
 	
-	static public function selectState () {
-		
+	public function selectState (state:State) {
+		if (currentState != null) {
+			currentState.deactivate();
+			removeChild(currentState);
+		}
+		currentState = state;
+		currentState.activate();
+		addChild(currentState);
 	}
 	
 	private function update (e:Event) {
 		tick++;
 		FTimer.update();
-		//state.update();
-		//level.update();
+		currentState.update();
 	}
 	
 }

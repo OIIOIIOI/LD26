@@ -8,6 +8,7 @@ import events.EventManager;
 import events.GameEvent;
 import flash.display.Bitmap;
 import flash.display.Sprite;
+import flash.errors.Error;
 import flash.events.Event;
 import flash.geom.Point;
 import flash.ui.Keyboard;
@@ -38,8 +39,13 @@ class Level extends Sprite {
 	
 	var scrollFloat:Point;
 	
+	static public var me:Level;
+	
 	public function new () {
 		super();
+		
+		if (me != null)	throw new Error("nope");
+		me = this;
 		
 		ActionManager.init();
 		
@@ -55,7 +61,7 @@ class Level extends Sprite {
 		
 		scrollFloat = new Point();
 		
-		var mapData = new MapData(3586);
+		var mapData = new MapData(1986);
 		
 		var minimap = new Bitmap(mapData);
 		minimap.x = Game.SIZE.width - mapData.width;
@@ -79,9 +85,9 @@ class Level extends Sprite {
 		entities.push(robot);
 		dm.add(robot, PLAYER_DEPTH);
 		
-		//EventManager.instance.addEventListener(GE.SPAWN_ENTITY, eventHandler);
+		//EventManager.me.addEventListener(GE.SPAWN_ENTITY, eventHandler);
 		
-		FTimer.delay(nextTurn, Game.TURN_DELAY);
+		FTimer.delay(nextTurn, 12);
 	}
 	
 	public function update () {
@@ -154,6 +160,8 @@ class Level extends Sprite {
 			// Scroll the map if possible
 			if (p.x != 0 || p.y != 0) {
 				p = map.scroll(p);
+			} else {
+				map.render(map.current);
 			}
 			// If there still is scroll left, move the robot
 			if (p.x != 0) {
