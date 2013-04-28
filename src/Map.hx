@@ -129,19 +129,19 @@ class Map extends Sprite {
 						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x + 1, scrollPoint.y + y))== E_Type.Rift)		rockIDnum += 2;
 						if (MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y + 1)) == E_Type.Rift)	rockIDnum += 4;
 						
-						if (rockIDnum == 2) {
+						/*if (rockIDnum == 2) {
 							if (MapData.getType(pixelData.getPixel(scrollPoint.x + x + 1, scrollPoint.y + y - 1))== E_Type.Rift) {
 								rockIDnum = 0;
 								trace("water 2 changed");
 							}
-						}
+						}*/
 						
-						/*if (rockIDnum == 15) {
+						if (rockIDnum == 15) {
 							if (MapData.getType(pixelData.getPixel(scrollPoint.x - 1 + x, scrollPoint.y + y - 1)) != E_Type.Rift) { rockIDnum += 1; }
 							else if (MapData.getType(pixelData.getPixel(scrollPoint.x + x + 1, scrollPoint.y + y - 1)) != E_Type.Rift) { rockIDnum += 2;}
 							else if (MapData.getType(pixelData.getPixel(scrollPoint.x + x - 1, scrollPoint.y + y + 1)) != E_Type.Rift) { rockIDnum += 3;}
 							else if (MapData.getType(pixelData.getPixel(scrollPoint.x + x + 1, scrollPoint.y + y + 1)) != E_Type.Rift) { rockIDnum += 4;}
-						}*/
+						}
 						
 						FrameManager.copyFrame(data, getTile(E_Type.Ground), Game.SHEET_TILES, Game.TAP);
 						FrameManager.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
@@ -160,8 +160,8 @@ class Map extends Sprite {
 		else				rand = new Rand(123456);
 		return switch (type) {
 			case E_Type.Ground:	"ground" + rand.random(3);
-			//case E_Type.Rock:	"rock"+ rockIDnum;
-			case E_Type.Rock:	"rock0";
+			case E_Type.Rock:	"rock"+ rockIDnum;
+			//case E_Type.Rock:	"rock0";
 			case E_Type.Ore:	"ore0";
 			case E_Type.Bush:	"bush0";
 			case E_Type.Rift:	"water"+ rockIDnum;
