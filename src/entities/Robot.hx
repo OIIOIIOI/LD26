@@ -16,7 +16,6 @@ class Robot extends Entity {
 	
 	public function new () {
 		super(E_Entity.ERobot);
-		
 		setFacing(FACING_RIGHT);
 	}
 	

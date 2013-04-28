@@ -16,8 +16,10 @@ class Data {
 enum E_Type {
 	Ground;
 	Rock;
+	RockMined;
 	Ore;
 	Bush;
+	BushCut;
 	Rift;
 }
 
