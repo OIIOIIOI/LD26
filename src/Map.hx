@@ -105,13 +105,13 @@ class Map extends Sprite {
 				switch (t) {
 					case E_Type.Ore, E_Type.Bush, E_Type.BushCut, E_Type.RockMined:
 						FM.copyFrame(data, getTile(E_Type.Ground, uid), Game.SHEET_TILES, Game.TAP);
-						FM.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
+						FM.copyFrame(data, getTile(t,uid),Game.SHEET_TILES, Game.TAP);
 					case E_Type.Rock:
 						rockIDnum = 0;
-						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y - 1)) == E_Type.Rock)	rockIDnum += 1;
-						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x - 1, scrollPoint.y + y))== E_Type.Rock)		rockIDnum += 8;
-						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x + 1, scrollPoint.y + y))== E_Type.Rock)		rockIDnum += 2;
-						if (MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y + 1)) == E_Type.Rock)	rockIDnum += 4;
+						if(MapData.getType(gp(realX, realY  - 1)) == E_Type.Rock)	rockIDnum += 1;
+						if(MapData.getType(gp(realX - 1, realY ))== E_Type.Rock)		rockIDnum += 8;
+						if(MapData.getType(gp(realX + 1, realY ))== E_Type.Rock)		rockIDnum += 2;
+						if (MapData.getType(gp(realX, realY  + 1)) == E_Type.Rock)	rockIDnum += 4;
 						
 						if (rockIDnum == 15) {
 							if (MapData.getType(gp(realX - 1, realY - 1)) != E_Type.Rock) { rockIDnum += 1; }
@@ -124,28 +124,31 @@ class Map extends Sprite {
 						FM.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
 					case E_Type.Rift:
 						rockIDnum = 0;
-						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y - 1)) == E_Type.Rift)	rockIDnum += 1;
-						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x - 1, scrollPoint.y + y))== E_Type.Rift)		rockIDnum += 8;
-						if(MapData.getType(pixelData.getPixel(scrollPoint.x + x + 1, scrollPoint.y + y))== E_Type.Rift)		rockIDnum += 2;
-						if (MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y + 1)) == E_Type.Rift)	rockIDnum += 4;
+						if(MapData.getType(gp(realX, realY  - 1)) == E_Type.Rift)	rockIDnum += 1;
+						if(MapData.getType(gp(realX - 1, realY ))== E_Type.Rift)		rockIDnum += 8;
+						if(MapData.getType(gp(realX + 1, realY ))== E_Type.Rift)		rockIDnum += 2;
+						if(MapData.getType(gp(realX, realY  + 1)) == E_Type.Rift)	rockIDnum += 4;
 						
-						switch(rockIDnum){
-							case 2:	if (MapData.getType(pixelData.getPixel(scrollPoint.x + x + 1, scrollPoint.y + y - 1))== E_Type.Rift || MapData.getType(pixelData.getPixel(scrollPoint.x + x + 1, scrollPoint.y + y + 1))== E_Type.Rift) {
+						switch(rockIDnum) {
+							case 10:if (MapData.getType(gp(realX + 1, realY  - 1))== E_Type.Rift || MapData.getType(gp(realX + 1, realY  + 1))== E_Type.Rift || MapData.getType(gp(realX - 1, realY  - 1))== E_Type.Rift || MapData.getType(gp(realX - 1, realY  - 1))== E_Type.Rift) {
 										rockIDnum = 0;
 									}
-							case 1:	if (MapData.getType(pixelData.getPixel(scrollPoint.x + x - 1, scrollPoint.y + y + 1)) == E_Type.Rift || MapData.getType(pixelData.getPixel(scrollPoint.x + x + 1, scrollPoint.y + y + 1))== E_Type.Rift) {
+							case 2:	if (MapData.getType(gp(realX + 1, realY  - 1))== E_Type.Rift || MapData.getType(gp(realX + 1, realY  + 1))== E_Type.Rift) {
 										rockIDnum = 0;
 									}
-							case 4:	if (MapData.getType(pixelData.getPixel(scrollPoint.x + x - 1, scrollPoint.y + y - 1))== E_Type.Rift || MapData.getType(pixelData.getPixel(scrollPoint.x + x + 1, scrollPoint.y + y - 1))== E_Type.Rift) {
+							case 1:	if (MapData.getType(gp(realX - 1, realY  + 1)) == E_Type.Rift || MapData.getType(gp(realX + 1, realY  + 1))== E_Type.Rift) {
 										rockIDnum = 0;
 									}
-							case 8: if (MapData.getType(pixelData.getPixel(scrollPoint.x + x - 1, scrollPoint.y + y - 1))== E_Type.Rift || MapData.getType(pixelData.getPixel(scrollPoint.x + x - 1, scrollPoint.y + y + 1))== E_Type.Rift) {
+							case 4:	if (MapData.getType(gp(realX - 1, realY  - 1))== E_Type.Rift || MapData.getType(gp(realX + 1, realY  - 1))== E_Type.Rift) {
 										rockIDnum = 0;
 									}
-							case 15:if (MapData.getType(pixelData.getPixel(scrollPoint.x - 1 + x, scrollPoint.y + y - 1)) != E_Type.Rift) { rockIDnum += 1; }
-									else if (MapData.getType(pixelData.getPixel(scrollPoint.x + x + 1, scrollPoint.y + y - 1)) != E_Type.Rift) { rockIDnum += 2;}
-									else if (MapData.getType(pixelData.getPixel(scrollPoint.x + x - 1, scrollPoint.y + y + 1)) != E_Type.Rift) { rockIDnum += 3;}
-									else if (MapData.getType(pixelData.getPixel(scrollPoint.x + x + 1, scrollPoint.y + y + 1)) != E_Type.Rift) { rockIDnum += 4;}
+							case 8: if (MapData.getType(gp(realX - 1, realY  - 1))== E_Type.Rift || MapData.getType(gp(realX - 1, realY  + 1))== E_Type.Rift) {
+										rockIDnum = 0;
+									}
+							case 15:if (MapData.getType(pixelData.getPixel(scrollPoint.x - 1 + x, realY  - 1)) != E_Type.Rift) { rockIDnum += 1; }
+									else if (MapData.getType(gp(realX + 1, realY  - 1)) != E_Type.Rift) { rockIDnum += 2;}
+									else if (MapData.getType(gp(realX - 1, realY  + 1)) != E_Type.Rift) { rockIDnum += 3;}
+									else if (MapData.getType(gp(realX + 1, realY  + 1)) != E_Type.Rift) { rockIDnum += 4;}
 						}
 						FrameManager.copyFrame(data, getTile(E_Type.Ground), Game.SHEET_TILES, Game.TAP);
 						FrameManager.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
@@ -165,7 +168,7 @@ class Map extends Sprite {
 		return switch (type) {
 			case E_Type.Ground:	"ground" + rand.random(3);
 			case E_Type.Rock:	"rock"+ rockIDnum;
-			case E_Type.RockMined:	"oreMined0";
+			case E_Type.RockMined:"oreMined" + rand.random(3);
 			//case E_Type.Rock:	"rock0";
 			case E_Type.Ore:	"ore0";
 			case E_Type.Bush:	"bush0";
