@@ -36,7 +36,6 @@ class Frame implements Public
 		y = yPos;
 		width = w;
 		height = h;
-		trace("frame " + name);
 	}
 	
 	function fromObject (d:Dynamic) :Void {

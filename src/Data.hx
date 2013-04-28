@@ -20,3 +20,17 @@ enum E_Type {
 	Bush;
 	Rift;
 }
+
+enum E_Entity {
+	ERobot;
+}
+
+
+
+
+
+
+
+
+
+

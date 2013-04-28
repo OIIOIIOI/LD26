@@ -21,9 +21,11 @@ class Map extends Sprite {
 	var data:BitmapData;
 	var bitmap:Bitmap;
 	
-	var origin:IntPoint;
+	var target:IntPoint;
+	var current:IntPoint;
+	
 	var scrollPoint:IntPoint;
-	var scrollFloat:Point;
+	//var scrollFloat:Point;
 	
 	public function new (pixelData:MapData) {
 		super();
@@ -34,66 +36,52 @@ class Map extends Sprite {
 		bitmap = new Bitmap(data);
 		addChild(bitmap);
 		
-		origin = new IntPoint();
-		bitmap.x = origin.x = Std.int((Game.SIZE.width - data.width) / 2);
-		bitmap.y = origin.y = Std.int((Game.SIZE.height - data.height) / 2);
-		
-		scrollFloat = new Point();
+		target = new IntPoint();
+		current = new IntPoint();
 	}
 	
-	public function scroll (x:Float = 0, y:Float = 0) {
-		// HORIZONTAL
-		if (bitmap.x < 0 && bitmap.x + bitmap.width > Game.SIZE.width) {
-			scrollFloat.x += x;
-			while (scrollFloat.x >= 1) {
-				bitmap.x++;
-				scrollFloat.x--;
-			}
-			while (scrollFloat.x <= -1) {
-				bitmap.x--;
-				scrollFloat.x++;
-			}
-			if (scrollPoint.x != 0 && scrollPoint.x + Game.REAL_MAP_SIZE.width != Game.MAP_SIZE.width) {
-				while (bitmap.x - origin.x > Game.TILE_SIZE) {
-					bitmap.x -= Game.TILE_SIZE;
-					data.scroll(Game.TILE_SIZE, 0);
-					scrollPoint.x = scrollPoint.x - 1;
-					drawLine(1);
-				}
-				while (origin.x - bitmap.x > Game.TILE_SIZE) {
-					bitmap.x += Game.TILE_SIZE;
-					data.scroll(-Game.TILE_SIZE, 0);
-					scrollPoint.x = scrollPoint.x + 1;
-					drawLine(-1);
-				}
-			}
+	public function scroll (p:IntPoint) :IntPoint {
+		if (current.x + p.x >= 0 && current.x + p.x < pixelData.width - Game.REAL_MAP_SIZE.width) {
+			target.x = current.x + p.x;
+			p.x = 0;
 		}
-		// VERTICAL
-		if (bitmap.y < 0 && bitmap.y + bitmap.height > Game.SIZE.height) {
-			scrollFloat.y += y;
-			while (scrollFloat.y >= 1) {
-				bitmap.y++;
-				scrollFloat.y--;
-			}
-			while (scrollFloat.y <= -1) {
-				bitmap.y--;
-				scrollFloat.y++;
-			}
-			if (scrollPoint.y != 0 && scrollPoint.y + Game.REAL_MAP_SIZE.height != Game.MAP_SIZE.height) {
-				while (bitmap.y - origin.y > Game.TILE_SIZE) {
-					bitmap.y -= Game.TILE_SIZE;
-					data.scroll(0, Game.TILE_SIZE);
-					scrollPoint.y = scrollPoint.y - 1;
-					drawLine(0, 1);
-				}
-				while (origin.y - bitmap.y > Game.TILE_SIZE) {
-					bitmap.y += Game.TILE_SIZE;
-					data.scroll(0, -Game.TILE_SIZE);
-					scrollPoint.y = scrollPoint.y + 1;
-					drawLine(0, -1);
-				}
-			}
+		if (current.y + p.y >= 0 && current.y + p.y < pixelData.height - Game.REAL_MAP_SIZE.height) {
+			target.y = current.y + p.y;
+			p.y = 0;
 		}
+		return p;
+	}
+	
+	public function update () {
+		var allowRender = false;
+		
+		if (target.x != current.x) {
+			var xTarget = (target.x > current.x) ? -Game.TILE_SIZE : Game.TILE_SIZE;
+			if (Math.abs(bitmap.x - xTarget) < Game.SMOOTH_CUT) {
+				bitmap.x = xTarget;
+				current.x = target.x;
+				allowRender = true;
+			}
+			else bitmap.x -= (bitmap.x - xTarget) * Game.SMOOTH_MOD;
+		}
+		
+		if (target.y != current.y) {
+			var yTarget = (target.y > current.y) ? -Game.TILE_SIZE : Game.TILE_SIZE;
+			if (Math.abs(bitmap.y - yTarget) < Game.SMOOTH_CUT) {
+				bitmap.y = yTarget;
+				current.y = target.y;
+				allowRender = true;
+			}
+			else bitmap.y -= (bitmap.y - yTarget) * Game.SMOOTH_MOD;
+		}
+		
+		if (allowRender)	render(current);
+		
+		/*if (target.x != current.x || target.y != current.y) {
+			current.x = target.x;
+			current.y = target.y;
+			render(current);
+		}*/
 	}
 	
 	function drawLine (h:Int = 0, v:Int = 0) {
@@ -127,15 +115,16 @@ class Map extends Sprite {
 				var t = MapData.getType(pixelData.getPixel(scrollPoint.x + x, scrollPoint.y + y));
 				switch (t) {
 					case E_Type.Ore, E_Type.Rock, E_Type.Bush:
-						FrameManager.copyFrame(data, getTile(E_Type.Ground), "tiles", Game.TAP);
-						FrameManager.copyFrame(data, getTile(t), "tiles", Game.TAP);
+						FrameManager.copyFrame(data, getTile(E_Type.Ground), Game.SHEET_TILES, Game.TAP);
+						FrameManager.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
 					case E_Type.Rift:
-						FrameManager.copyFrame(data, getTile(t), "tiles", Game.TAP);
+						FrameManager.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
 					default:
-						FrameManager.copyFrame(data, getTile(E_Type.Ground), "tiles", Game.TAP);
+						FrameManager.copyFrame(data, getTile(E_Type.Ground), Game.SHEET_TILES, Game.TAP);
 				}
 			}
 		}
+		bitmap.x = bitmap.y = 0;
 	}
 	
 	/*public function render (point:IntPoint) {
@@ -155,11 +144,11 @@ class Map extends Sprite {
 	
 	static function getTile (type:E_Type) :String {
 		return switch (type) {
-			case E_Type.Ground:	"ground";
-			case E_Type.Rock:	"rock";
-			case E_Type.Ore:	"ore";
-			case E_Type.Bush:	"bush";
-			case E_Type.Rift:	"rift";
+			case E_Type.Ground:	"ground" + Std.random(3);
+			case E_Type.Rock:	"rock0";
+			case E_Type.Ore:	"ore0";
+			case E_Type.Bush:	"bush0";
+			case E_Type.Rift:	"water0";
 			default: "";
 		}
 	}

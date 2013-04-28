@@ -15,6 +15,7 @@ class Main {
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 		Lib.current.stage.align = StageAlign.TOP_LEFT;
 		Lib.current.stage.addChild(new Game());
+		KeyboardManager.init(Lib.current.stage);
 	}
 	
 }
