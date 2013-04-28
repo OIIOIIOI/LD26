@@ -35,8 +35,8 @@ class Map extends Sprite {
 		addChild(bitmap);
 		
 		origin = new IntPoint();
-		//bitmap.x = origin.x = Std.int((Game.SIZE.width - data.width) / 2);
-		//bitmap.y = origin.y = Std.int((Game.SIZE.height - data.height) / 2);
+		bitmap.x = origin.x = Std.int((Game.SIZE.width - data.width) / 2);
+		bitmap.y = origin.y = Std.int((Game.SIZE.height - data.height) / 2);
 		
 		scrollFloat = new Point();
 	}

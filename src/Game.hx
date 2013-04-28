@@ -57,7 +57,7 @@ class Game extends Sprite {
 		bd.x = Game.SIZE.width - bd.width;
 		addChild(bd);
 		
-		//addEventListener(Event.ENTER_FRAME, update);
+		addEventListener(Event.ENTER_FRAME, update);
 		
 		/*var bd = FrameManager.getFrame("ground", "tiles");
 		trace(bd);
@@ -65,7 +65,7 @@ class Game extends Sprite {
 	}
 	
 	private function update (e:Event) {
-		map.scroll(-4);
+		map.scroll(-3);
 	}
 	
 }
