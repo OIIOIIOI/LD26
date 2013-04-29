@@ -23,6 +23,8 @@ class Button extends Sprite {
 		trace(btnlookData);
 		this.x = coox;
 		this.y = cooy;
+		
+		buttonMode = true;
 	}
 	
 }
