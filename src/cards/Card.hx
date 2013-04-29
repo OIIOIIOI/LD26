@@ -10,6 +10,8 @@ class Card
 	public var type: E_Card;
 	public var level: Int;
 	public var lvlmax: Int;
+	public var dansPioche : Bool;
+	public var dansJeu : Bool;
 	
 	private function upgrade():Void {
 		level++;
@@ -31,6 +33,8 @@ class Card
 			case bouee:				lvlmax = 0;
 		}
 		type = newtype;
+		dansJeu = false;
+		dansPioche = true;
 	}
 	
 }
