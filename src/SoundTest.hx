@@ -154,7 +154,8 @@ class SoundTest extends Sprite {
 				change();
 				rTarget += 40;
 				if (rTarget > Game.SIZE.width - 60)	robot.x = rTarget = 20;
-			} else {
+			}
+			else {
 				switch (Std.random(12)) {
 					case 0:
 						if (tick % 2 == 0) {

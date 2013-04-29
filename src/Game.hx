@@ -57,6 +57,7 @@ class Game extends Sprite {
 		FrameManager.store(SHEET_TILES, new TilesBD(0, 0), Resource.getString("tilesJson"));
 		
 		new Level();
+		new SoundManager();
 		
 		titleState = new TitleState();
 		prepaState = new PrepaState();

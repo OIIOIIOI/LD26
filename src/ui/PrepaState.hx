@@ -1,4 +1,5 @@
 package ui;
+import SoundManager;
 
 /**
  * ...
@@ -13,6 +14,7 @@ class PrepaState extends State {
 	
 	override public function activate () :Void {
 		super.activate();
+		SoundManager.me.selectTrack(SM.TRK_MENU);
 	}
 	
 	override public function update () :Void {

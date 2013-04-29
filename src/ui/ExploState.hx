@@ -1,4 +1,5 @@
 package ui;
+import SoundManager;
 
 /**
  * ...
@@ -15,6 +16,7 @@ class ExploState extends State {
 		super.activate();
 		addChild(Level.me);
 		Level.me.start();
+		SoundManager.me.selectTrack(SM.TRK_EXPLO);
 	}
 	
 	override public function update () :Void {
