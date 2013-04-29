@@ -55,7 +55,7 @@ class MapData extends BitmapData {
 		spawnRift();
 		
 		var surface = Game.MAP_SIZE.width * Game.MAP_SIZE.height;
-		for (i in 0...Std.int(surface*0.007))	spawnOre();
+		for (i in 0...Std.int(surface * 0.007))	spawnOre();
 		for (i in 0...Std.int(surface * 0.05))	spawnBush();
 		
 		var mapCenter:IntPoint = new IntPoint(Std.int(Game.MAP_SIZE.width / 2), Std.int(Game.MAP_SIZE.height / 2));

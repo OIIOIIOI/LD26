@@ -53,8 +53,6 @@ class Level extends Sprite {
 		ActionManager.init();
 		
 		container = new Sprite();
-		//container.x = (Game.SIZE.width - Game.REAL_MAP_SIZE.width * Game.TILE_SIZE) / 2;
-		//container.y = (Game.SIZE.height - Game.REAL_MAP_SIZE.height * Game.TILE_SIZE) / 2;
 		addChild(container);
 		
 		dm = new DepthManager(container);
@@ -67,9 +65,9 @@ class Level extends Sprite {
 		var mapData = new MapData(987456);
 		
 		var minimap = new Bitmap(mapData);
-		minimap.scaleX = minimap.scaleY = 4;
-		minimap.x = Game.SIZE.width - mapData.width;
-		minimap.y = Game.SIZE.height - mapData.height;
+		minimap.x = Game.SIZE.width - mapData.width * 2;
+		minimap.y = Game.SIZE.height - mapData.height * 2;
+		minimap.scaleX = minimap.scaleY = 2;
 		dm.add(minimap, FX_DEPTH);
 		
 		container.x = (Game.SIZE.width / Game.TILE_SIZE - Game.REAL_MAP_SIZE.width) / 2 * Game.TILE_SIZE;
@@ -82,16 +80,14 @@ class Level extends Sprite {
 		
 		robot = new Robot();
 		robotCenter = mapData.playerStart.clone();
-		//robotCenter = new IntPoint();
-		//robot.x = robot.xTarget = robotCenter.x = Std.int(Game.REAL_MAP_SIZE.width / 2) * Game.TILE_SIZE;
-		//robot.y = robot.yTarget = robotCenter.y = Std.int(Game.REAL_MAP_SIZE.height / 2) * Game.TILE_SIZE;
-		robot.x = robot.xTarget = robotCenter.x * Game.TILE_SIZE;
-		robot.y = robot.yTarget = robotCenter.y * Game.TILE_SIZE;
+		robotCenter.x = Std.int(Game.REAL_MAP_SIZE.width / 2) * Game.TILE_SIZE;
+		robotCenter.y = Std.int(Game.REAL_MAP_SIZE.height / 2) * Game.TILE_SIZE;
+		robot.x = robot.xTarget = 9 * Game.TILE_SIZE;
+		robot.y = robot.yTarget = 9 * Game.TILE_SIZE;
 		entities.push(robot);
 		dm.add(robot, PLAYER_DEPTH);
 		
-		map.render(new IntPoint(robotCenter.x - 8, robotCenter.y - 8));
-		//trace(map.current);
+		map.render(new IntPoint(mapData.playerStart.x - 9, mapData.playerStart.y - 9));
 	}
 	
 	public function start () {
@@ -107,21 +103,31 @@ class Level extends Sprite {
 	}
 	
 	function moveRobot (p:IntPoint) :IntPoint {
-		var rxt = Std.int(robot.xTarget / Game.TILE_SIZE) + p.x;
-		var ryt = Std.int(robot.yTarget / Game.TILE_SIZE) + p.y;
-		
-		map.pixelData.setPixel(rxt, ryt, 0x808080);
+		var rxt = Std.int(robot.xTarget / Game.TILE_SIZE) + p.x + map.current.x;
+		var ryt = Std.int(robot.yTarget / Game.TILE_SIZE) + p.y + map.current.y;
 		
 		var tileType = MapData.getType(map.pixelData.getPixel(rxt, ryt));
 		switch (tileType) {
-			//case E_Type.Rock:
-				//map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.RockMined));
-				//return new IntPoint();
-			//case E_Type.Ore, E_Type.Rift, E_Type.Rock, E_Type.Bush:
-				//return null;
-			//case E_Type.Bush:
-				//map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.BushCut));
-				//return new IntPoint();
+			case E_Type.Ore, E_Type.Rift:
+				return null;
+			case E_Type.Rock:
+				if (ActionManager.canMine) {
+					if (p.x == 1)		ActionManager.insertAction(E_Action.ARight(1), false);
+					else if (p.x == -1)	ActionManager.insertAction(E_Action.ALeft(1), false);
+					else if (p.y == -1)	ActionManager.insertAction(E_Action.AUp(1), false);
+					else if (p.y == 1)	ActionManager.insertAction(E_Action.ADown(1), false);
+					ActionManager.insertAction(E_Action.AMine);
+				}
+				return null;
+			case E_Type.Bush:
+				if (ActionManager.canSaw) {
+					if (p.x == 1)		ActionManager.insertAction(E_Action.ARight(1), false);
+					else if (p.x == -1)	ActionManager.insertAction(E_Action.ALeft(1), false);
+					else if (p.y == -1)	ActionManager.insertAction(E_Action.AUp(1), false);
+					else if (p.y == 1)	ActionManager.insertAction(E_Action.ADown(1), false);
+					ActionManager.insertAction(E_Action.ASaw);
+				}
+				return null;
 			default:
 		}
 		
@@ -133,6 +139,7 @@ class Level extends Sprite {
 				robot.xTarget = Std.int(newPosX);
 				p.x = 0;
 			}
+			else return null;
 		}
 		if (p.y != 0 && robot.yTarget != robotCenter.y) {
 			var newPosY:Float = robot.yTarget + p.y * Game.TILE_SIZE;
@@ -142,6 +149,7 @@ class Level extends Sprite {
 				robot.yTarget = Std.int(newPosY);
 				p.y = 0;
 			}
+			else return null;
 		}
 		return p;
 	}
@@ -153,6 +161,8 @@ class Level extends Sprite {
 			return;
 		}
 		
+		var rxt = Std.int(robot.xTarget / Game.TILE_SIZE) + map.current.x;
+		var ryt = Std.int(robot.yTarget / Game.TILE_SIZE) + map.current.y;
 		var sx = 0;
 		var sy = 0;
 		
@@ -172,12 +182,36 @@ class Level extends Sprite {
 				robot.facing = Robot.FACING_DOWN;
 				sy += 1;
 			case E_Action.ADig:
-				var rxt = Std.int(robot.xTarget / Game.TILE_SIZE) + map.current.x;
-				var ryt = Std.int(robot.yTarget / Game.TILE_SIZE) + map.current.y;
 				if (MapData.getType(map.pixelData.getPixel(rxt, ryt)) != E_Type.Ground)
 					a.discard();
 				else {
 					map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.GroundDug));
+					map.render(map.current);
+				}
+			case E_Action.AMine:
+				switch (robot.facing) {
+					case Robot.FACING_LEFT:		rxt -= 1;
+					case Robot.FACING_RIGHT:	rxt += 1;
+					case Robot.FACING_UP:		ryt -= 1;
+					case Robot.FACING_DOWN:		ryt += 1;
+				}
+				if (MapData.getType(map.pixelData.getPixel(rxt, ryt)) != E_Type.Rock)
+					a.discard();
+				else {
+					map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.RockMined));
+					map.render(map.current);
+				}
+			case E_Action.ASaw:
+				switch (robot.facing) {
+					case Robot.FACING_LEFT:		rxt -= 1;
+					case Robot.FACING_RIGHT:	rxt += 1;
+					case Robot.FACING_UP:		ryt -= 1;
+					case Robot.FACING_DOWN:		ryt += 1;
+				}
+				if (MapData.getType(map.pixelData.getPixel(rxt, ryt)) != E_Type.Bush)
+					a.discard();
+				else {
+					map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.BushCut));
 					map.render(map.current);
 				}
 		}
@@ -186,7 +220,7 @@ class Level extends Sprite {
 			// Place the robot back in the center if possible
 			var p = moveRobot(new IntPoint(sx, sy));
 			// null means the action was not possible and must be discarded
-			if (p == null)	a.discard();
+			if (p == null)	a.discard(false);
 			else {
 				// Scroll the map if possible
 				if (p.x != 0 || p.y != 0) {

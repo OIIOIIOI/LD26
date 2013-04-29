@@ -26,6 +26,8 @@ class Robot extends Entity {
 		else											x -= (x - xTarget) * Game.SMOOTH_MOD;
 		if (Math.abs(y - yTarget) < Game.SMOOTH_CUT)	y = yTarget;
 		else											y -= (y - yTarget) * Game.SMOOTH_MOD;
+		
+		//trace("ROBOT " + x + " / " + xTarget);
 	}
 	
 	function setFacing (f:String) :String {
