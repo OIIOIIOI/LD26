@@ -33,7 +33,7 @@ class CardStack
 				pickedCard = tempdeck.randomcard();
 				tempdeck.cardlist.remove(pickedCard);
 				cardlist.push(pickedCard);
-				trace (pickedCard.type);
+				//trace (pickedCard.type);
 			}
 		}
 		else {
@@ -56,18 +56,24 @@ class CardStack
 		switch(type) {
 			case E_CardStackType.deck:	cardlist = new Array();
 											stckCrdType = E_CardStackType.deck;
-											cardlist.push(new Card(avancerhaut));
-											cardlist.push(new Card(avancerhaut));
-											cardlist.push(new Card(avancerbas));
-											cardlist.push(new Card(avancerbas));
-											cardlist.push(new Card(avancerdroite));
-											cardlist.push(new Card(avancerdroite));
-											cardlist.push(new Card(avancergauche));
-											cardlist.push(new Card(avancergauche));
+											cardlist.push(new Card(E_Card.avancerhaut));
+											cardlist.push(new Card(E_Card.avancerhaut));
+											cardlist.push(new Card(E_Card.avancerbas));
+											cardlist.push(new Card(E_Card.avancerbas));
+											cardlist.push(new Card(E_Card.avancerdroite));
+											cardlist.push(new Card(E_Card.avancerdroite));
+											cardlist.push(new Card(E_Card.avancergauche));
+											cardlist.push(new Card(E_Card.avancergauche));
+											cardlist.push(new Card(E_Card.creuser));
+											cardlist.push(new Card(E_Card.creuser));
+											cardlist.push(new Card(E_Card.creuser));
+											cardlist.push(new Card(E_Card.creuser));
+											cardlist.push(new Card(E_Card.creuser));
+											cardlist.push(new Card(E_Card.creuser));
 											nbofCards = cardlist.length;
 											
 			case E_CardStackType.pioche:	cardlist = new Array();
-											nbofCards = 6;
+											nbofCards = 5 + Game.me.rank;
 											stckCrdType = E_CardStackType.pioche;
 			
 			case E_CardStackType.jeu:		cardlist = new Array();

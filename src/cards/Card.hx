@@ -33,7 +33,7 @@ class Card
 		return costperlvl;
 	}
 	
-	public function new(newtype:E_Card,cardlevel:Int ) 
+	public function new(newtype:E_Card,cardlevel:Int = 0)
 	{
 		switch(newtype) {
 			case avancerhaut:		lvlmax = 4;
@@ -52,7 +52,7 @@ class Card
 	}
 	
 	public function clone () :Card {
-		var c:Card = new Card(this.type);
+		var c:Card = new Card(this.type, this.level);
 		return c;
 	}
 	

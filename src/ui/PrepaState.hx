@@ -1,5 +1,6 @@
 package ui;
 import cards.CardStack;
+import Data;
 import flash.events.MouseEvent;
 import SoundManager;
 
@@ -25,16 +26,14 @@ class PrepaState extends State {
 		
 		addChild(Level.me);
 		
-		
 		ActionManager.init();
 		
-		var numCards = 4 + Game.me.rank;
-		for (i in 0...numCards) {
-			var c = Game.me.deck.randomcard();
+		var draw:CardStack = new CardStack(E_CardStackType.pioche);
+		draw.pickCards(Game.me.deck);
+		
+		for (c in draw.cardlist) {
 			ActionManager.pushAction(ActionManager.getActionFromCard(c));
 		}
-		
-		trace(ActionManager.visibleActions());
 		
 		button.addEventListener(MouseEvent.CLICK, clickHandler);
 		addChild(button);
