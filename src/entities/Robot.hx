@@ -36,4 +36,17 @@ class Robot extends Entity {
 		return f;
 	}
 	
+	public function autoDestruct () {
+		while (frames.length > 0)	frames.shift();
+		for (i in 0...3)	frames.push("robot_up_0");
+		for (i in 0...3)	frames.push("robot_left_0");
+		for (i in 0...3)	frames.push("robot_right_0");
+		for (i in 0...3)	frames.push("robot_up_0");
+		for (i in 0...3)	frames.push("robot_down_0");
+		for (i in 0...3)	frames.push("robot_right_0");
+		for (i in 0...3)	frames.push("robot_down_0");
+		for (i in 0...3)	frames.push("robot_left_0");
+		for (i in 0...3)	frames.push("robot_down_0");
+	}
+	
 }

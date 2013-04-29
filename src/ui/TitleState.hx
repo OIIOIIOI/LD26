@@ -9,16 +9,12 @@ import flash.events.MouseEvent;
 
 class TitleState extends State {
 	
-	var button:Sprite;
+	var button:Button;
 	
 	public function new () {
 		super();
 		
-		button = new Sprite();
-		button.graphics.beginFill(0);
-		button.graphics.drawRect(0, 0, 150, 30);
-		button.graphics.endFill();
-		button.buttonMode = true;
+		button = new Button();
 	}
 	
 	override public function activate () :Void {
