@@ -20,22 +20,23 @@ class MapData extends BitmapData {
 	static public var C_ORE:UInt =		0xFF0000;
 	static public var C_BUSH:UInt =		0x00FF00;
 	static public var C_BUSHCUT:UInt =	0x00DD00;
-	static public var C_RIFT:UInt =		0x0000FF;
+	static public var C_WATER:UInt =		0x0000FF;
 	
 	static var RAND:Rand;
 	public var perlmap:BitmapData;
 	public var rockperlmap:BitmapData;
-	public var riftperlmap:BitmapData;
+	public var waterperlmap:BitmapData;
 	public var bushperlmap :BitmapData;
 	var seed:Int;
 	
 	public var playerStart:IntPoint;
 	
 	public function new (seed:Int) {
-		
 		super(Game.MAP_SIZE.width, Game.MAP_SIZE.height, false);
+		
 		this.seed = seed;
 		RAND = new Rand(seed);
+		trace(seed);
 		
 		perlmap = new BitmapData(Game.MAP_SIZE.width, Game.MAP_SIZE.height, false);
 		perlmap.perlinNoise(perlmap.width/5, perlmap.height/5, 1, seed,false, true, 7, true);
@@ -44,7 +45,7 @@ class MapData extends BitmapData {
 		
 		rockperlmap = new BitmapData(Game.MAP_SIZE.width, Game.MAP_SIZE.height, true);
 		rockperlmap.perlinNoise(10, 10, 1, RAND.random(50000000), false, true, 7, true);
-		riftperlmap = rockperlmap.clone();
+		waterperlmap = rockperlmap.clone();
 		
 		bushperlmap = new BitmapData(Game.MAP_SIZE.width, Game.MAP_SIZE.height, true);
 		bushperlmap.perlinNoise(bushperlmap.width /4, bushperlmap.height /4, 1, RAND.random(50000000), false, true, 7, true);
@@ -52,7 +53,7 @@ class MapData extends BitmapData {
 		bushperlmap.threshold(bushperlmap, bushperlmap.rect, new Point(), ">", 0xFF808080, 0xFFFFFFFF);
 			
 		spawnRock();
-		spawnRift();
+		spawnWater();
 		
 		var surface = Game.MAP_SIZE.width * Game.MAP_SIZE.height;
 		for (i in 0...Std.int(surface * 0.007))	spawnOre();
@@ -95,11 +96,11 @@ class MapData extends BitmapData {
 		setPixel(x, y, color);
 	}
 	
-	public function spawnRift () {
-		
-		riftperlmap.threshold(riftperlmap, riftperlmap.rect, new Point(), "<", 0xFFB0B0B0, 0x00FFFFFF);
-		riftperlmap.threshold(riftperlmap, riftperlmap.rect, new Point(), ">=", 0xFFB0B0B0,0xFF000000+C_RIFT);
-		draw(riftperlmap);
+	public function spawnWater () {
+		var t = 0xFF999999;//0xFFB0B0B0;
+		waterperlmap.threshold(waterperlmap, waterperlmap.rect, new Point(), "<", t, 0x00FFFFFF);
+		waterperlmap.threshold(waterperlmap, waterperlmap.rect, new Point(), ">=", t,0xFF000000+C_WATER);
+		draw(waterperlmap);
 	}
 	
 	public function spawnRock () {
@@ -135,7 +136,7 @@ class MapData extends BitmapData {
 			case E_Type.Ore:	C_ORE;
 			case E_Type.Bush:	C_BUSH;
 			case E_Type.BushCut:C_BUSHCUT;
-			case E_Type.Rift:	C_RIFT;
+			case E_Type.Water:	C_WATER;
 		}
 	}
 	
@@ -146,7 +147,7 @@ class MapData extends BitmapData {
 			case C_ORE:		E_Type.Ore;
 			case C_BUSH:	E_Type.Bush;
 			case C_BUSHCUT:	E_Type.BushCut;
-			case C_RIFT:	E_Type.Rift;
+			case C_WATER:	E_Type.Water;
 			case C_GROUNDDUG:	E_Type.GroundDug;
 			default:	E_Type.Ground;
 		}

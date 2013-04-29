@@ -27,6 +27,7 @@ class Robot extends Entity {
 		if (Math.abs(y - yTarget) < Game.SMOOTH_CUT)	y = yTarget;
 		else											y -= (y - yTarget) * Game.SMOOTH_MOD;
 		
+		trace(Level.me.getTypeUnderRobot());
 		//trace("ROBOT " + x + " / " + xTarget);
 	}
 	

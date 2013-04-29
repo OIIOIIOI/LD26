@@ -12,11 +12,13 @@ class ActionManager {
 	static private var cycle:Array<Action>;
 	static public var nextAction(getNextAction, null):Action;
 	
-	static public var canMine:Bool = false;
-	static public var canSaw:Bool = false;
+	static public var canMine:Bool;
+	static public var canSaw:Bool;
+	static public var canSwim:Bool;
 	
 	static public function init () {
-		canMine = canSaw = false;
+		//canMine = canSaw = canSwim = false;
+		canMine = canSaw = canSwim = true;
 		cycle = new Array<Action>();
 		cycleIndex = 0;
 	}
@@ -79,6 +81,7 @@ class ActionManager {
 				}
 			case AMine:	canMine = true;
 			case ASaw:	canSaw = true;
+			case ASwim:	canSwim = true;
 			default:
 		}
 	}

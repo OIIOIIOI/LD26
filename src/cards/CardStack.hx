@@ -34,6 +34,7 @@ class CardStack
 				tempdeck.cardlist.remove(pickedCard);
 				cardlist.push(pickedCard);
 				//trace (pickedCard.type);
+				if (tempdeck.cardlist.length == 0)	return;
 			}
 		}
 		else {
@@ -58,18 +59,18 @@ class CardStack
 											stckCrdType = E_CardStackType.deck;
 											cardlist.push(new Card(E_Card.avancerhaut));
 											cardlist.push(new Card(E_Card.avancerhaut));
-											cardlist.push(new Card(E_Card.avancerbas));
-											cardlist.push(new Card(E_Card.avancerbas));
-											cardlist.push(new Card(E_Card.avancerdroite));
-											cardlist.push(new Card(E_Card.avancerdroite));
+											//cardlist.push(new Card(E_Card.avancerbas));
+											//cardlist.push(new Card(E_Card.avancerbas));
+											//cardlist.push(new Card(E_Card.avancerdroite));
+											//cardlist.push(new Card(E_Card.avancerdroite));
 											cardlist.push(new Card(E_Card.avancergauche));
 											cardlist.push(new Card(E_Card.avancergauche));
-											cardlist.push(new Card(E_Card.creuser));
-											cardlist.push(new Card(E_Card.creuser));
-											cardlist.push(new Card(E_Card.creuser));
-											cardlist.push(new Card(E_Card.creuser));
-											cardlist.push(new Card(E_Card.creuser));
-											cardlist.push(new Card(E_Card.creuser));
+											//cardlist.push(new Card(E_Card.creuser));
+											//cardlist.push(new Card(E_Card.creuser));
+											//cardlist.push(new Card(E_Card.creuser));
+											//cardlist.push(new Card(E_Card.creuser));
+											//cardlist.push(new Card(E_Card.creuser));
+											//cardlist.push(new Card(E_Card.creuser));
 											nbofCards = cardlist.length;
 											
 			case E_CardStackType.pioche:	cardlist = new Array();

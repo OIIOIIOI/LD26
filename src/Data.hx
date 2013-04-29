@@ -21,7 +21,7 @@ enum E_Type {
 	Ore;
 	Bush;
 	BushCut;
-	Rift;
+	Water;
 }
 
 enum E_Entity {

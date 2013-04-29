@@ -122,33 +122,33 @@ class Map extends Sprite {
 						
 						FM.copyFrame(data, getTile(E_Type.Ground, uid), Game.SHEET_TILES, Game.TAP);
 						FM.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
-					case E_Type.Rift:
+					case E_Type.Water:
 						rockIDnum = 0;
-						if(MapData.getType(gp(realX, realY  - 1)) == E_Type.Rift)	rockIDnum += 1;
-						if(MapData.getType(gp(realX - 1, realY ))== E_Type.Rift)		rockIDnum += 8;
-						if(MapData.getType(gp(realX + 1, realY ))== E_Type.Rift)		rockIDnum += 2;
-						if(MapData.getType(gp(realX, realY  + 1)) == E_Type.Rift)	rockIDnum += 4;
+						if(MapData.getType(gp(realX, realY  - 1)) == E_Type.Water)	rockIDnum += 1;
+						if(MapData.getType(gp(realX - 1, realY ))== E_Type.Water)		rockIDnum += 8;
+						if(MapData.getType(gp(realX + 1, realY ))== E_Type.Water)		rockIDnum += 2;
+						if(MapData.getType(gp(realX, realY  + 1)) == E_Type.Water)	rockIDnum += 4;
 						
 						switch(rockIDnum) {
-							case 10:if (MapData.getType(gp(realX + 1, realY  - 1))== E_Type.Rift || MapData.getType(gp(realX + 1, realY  + 1))== E_Type.Rift || MapData.getType(gp(realX - 1, realY  - 1))== E_Type.Rift || MapData.getType(gp(realX - 1, realY  - 1))== E_Type.Rift) {
+							case 10:if (MapData.getType(gp(realX + 1, realY  - 1))== E_Type.Water || MapData.getType(gp(realX + 1, realY  + 1))== E_Type.Water || MapData.getType(gp(realX - 1, realY  - 1))== E_Type.Water || MapData.getType(gp(realX - 1, realY  - 1))== E_Type.Water) {
 										rockIDnum = 0;
 									}
-							case 2:	if (MapData.getType(gp(realX + 1, realY  - 1))== E_Type.Rift || MapData.getType(gp(realX + 1, realY  + 1))== E_Type.Rift) {
+							case 2:	if (MapData.getType(gp(realX + 1, realY  - 1))== E_Type.Water || MapData.getType(gp(realX + 1, realY  + 1))== E_Type.Water) {
 										rockIDnum = 0;
 									}
-							case 1:	if (MapData.getType(gp(realX - 1, realY  + 1)) == E_Type.Rift || MapData.getType(gp(realX + 1, realY  + 1))== E_Type.Rift) {
+							case 1:	if (MapData.getType(gp(realX - 1, realY  + 1)) == E_Type.Water || MapData.getType(gp(realX + 1, realY  + 1))== E_Type.Water) {
 										rockIDnum = 0;
 									}
-							case 4:	if (MapData.getType(gp(realX - 1, realY  - 1))== E_Type.Rift || MapData.getType(gp(realX + 1, realY  - 1))== E_Type.Rift) {
+							case 4:	if (MapData.getType(gp(realX - 1, realY  - 1))== E_Type.Water || MapData.getType(gp(realX + 1, realY  - 1))== E_Type.Water) {
 										rockIDnum = 0;
 									}
-							case 8: if (MapData.getType(gp(realX - 1, realY  - 1))== E_Type.Rift || MapData.getType(gp(realX - 1, realY  + 1))== E_Type.Rift) {
+							case 8: if (MapData.getType(gp(realX - 1, realY  - 1))== E_Type.Water || MapData.getType(gp(realX - 1, realY  + 1))== E_Type.Water) {
 										rockIDnum = 0;
 									}
-							case 15:if (MapData.getType(pixelData.getPixel(scrollPoint.x - 1 + x, realY  - 1)) != E_Type.Rift) { rockIDnum += 1; }
-									else if (MapData.getType(gp(realX + 1, realY  - 1)) != E_Type.Rift) { rockIDnum += 2;}
-									else if (MapData.getType(gp(realX - 1, realY  + 1)) != E_Type.Rift) { rockIDnum += 3;}
-									else if (MapData.getType(gp(realX + 1, realY  + 1)) != E_Type.Rift) { rockIDnum += 4;}
+							case 15:if (MapData.getType(pixelData.getPixel(scrollPoint.x - 1 + x, realY  - 1)) != E_Type.Water) { rockIDnum += 1; }
+									else if (MapData.getType(gp(realX + 1, realY  - 1)) != E_Type.Water) { rockIDnum += 2;}
+									else if (MapData.getType(gp(realX - 1, realY  + 1)) != E_Type.Water) { rockIDnum += 3;}
+									else if (MapData.getType(gp(realX + 1, realY  + 1)) != E_Type.Water) { rockIDnum += 4;}
 						}
 						FrameManager.copyFrame(data, getTile(E_Type.Ground), Game.SHEET_TILES, Game.TAP);
 						FrameManager.copyFrame(data, getTile(t), Game.SHEET_TILES, Game.TAP);
@@ -175,7 +175,7 @@ class Map extends Sprite {
 			case E_Type.Ore:	"ore0";
 			case E_Type.Bush:	"bush0";
 			case E_Type.BushCut:"bush0Cut";
-			case E_Type.Rift:	"water"+ rockIDnum;
+			case E_Type.Water:	"water"+ rockIDnum;
 			default: "";
 		}
 	}

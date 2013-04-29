@@ -63,7 +63,8 @@ class Level extends Sprite {
 		
 		scrollFloat = new Point();
 		
-		var mapData = new MapData(987456);
+		//var mapData = new MapData(Game.RAND.random(99999));
+		var mapData = new MapData(4019);
 		
 		var minimap = new Bitmap(mapData);
 		minimap.x = Game.SIZE.width - mapData.width * 2;
@@ -103,58 +104,6 @@ class Level extends Sprite {
 		map.update();
 	}
 	
-	function moveRobot (p:IntPoint) :IntPoint {
-		var rxt = Std.int(robot.xTarget / Game.TILE_SIZE) + p.x + map.current.x;
-		var ryt = Std.int(robot.yTarget / Game.TILE_SIZE) + p.y + map.current.y;
-		
-		var tileType = MapData.getType(map.pixelData.getPixel(rxt, ryt));
-		switch (tileType) {
-			case E_Type.Ore, E_Type.Rift:
-				return null;
-			case E_Type.Rock:
-				if (ActionManager.canMine) {
-					if (p.x == 1)		ActionManager.insertAction(E_Action.ARight(1), false);
-					else if (p.x == -1)	ActionManager.insertAction(E_Action.ALeft(1), false);
-					else if (p.y == -1)	ActionManager.insertAction(E_Action.AUp(1), false);
-					else if (p.y == 1)	ActionManager.insertAction(E_Action.ADown(1), false);
-					ActionManager.insertAction(E_Action.AMine);
-				}
-				return null;
-			case E_Type.Bush:
-				if (ActionManager.canSaw) {
-					if (p.x == 1)		ActionManager.insertAction(E_Action.ARight(1), false);
-					else if (p.x == -1)	ActionManager.insertAction(E_Action.ALeft(1), false);
-					else if (p.y == -1)	ActionManager.insertAction(E_Action.AUp(1), false);
-					else if (p.y == 1)	ActionManager.insertAction(E_Action.ADown(1), false);
-					ActionManager.insertAction(E_Action.ASaw);
-				}
-				return null;
-			default:
-		}
-		
-		if (p.x != 0 && robot.xTarget != robotCenter.x) {
-			var newPosX:Float = robot.xTarget + p.x * Game.TILE_SIZE;
-			newPosX = Math.max(-container.x, newPosX);
-			newPosX = Math.min((Game.REAL_MAP_SIZE.width - 1) * Game.TILE_SIZE + container.x, newPosX);
-			if (newPosX != robot.xTarget) {
-				robot.xTarget = Std.int(newPosX);
-				p.x = 0;
-			}
-			else return null;
-		}
-		if (p.y != 0 && robot.yTarget != robotCenter.y) {
-			var newPosY:Float = robot.yTarget + p.y * Game.TILE_SIZE;
-			newPosY = Math.max(-container.y, newPosY);
-			newPosY = Math.min((Game.REAL_MAP_SIZE.height - 1) * Game.TILE_SIZE + container.y, newPosY);
-			if (newPosY != robot.yTarget) {
-				robot.yTarget = Std.int(newPosY);
-				p.y = 0;
-			}
-			else return null;
-		}
-		return p;
-	}
-	
 	function nextTurn (e:GameEvent) {
 		if (!ActionManager.isStillRunning()) {
 			autoDestruct();
@@ -183,6 +132,13 @@ class Level extends Sprite {
 				case E_Action.ADown(n):
 					robot.facing = Robot.FACING_DOWN;
 					sy += 1;
+				case E_Action.ASwim:
+					switch (robot.facing) {
+						case Robot.FACING_LEFT:		sx = 1;
+						case Robot.FACING_RIGHT:	sx = 1;
+						case Robot.FACING_UP:		sy = 1;
+						case Robot.FACING_DOWN:		sy = 1;
+					}
 				case E_Action.ADig:
 					if (MapData.getType(map.pixelData.getPixel(rxt, ryt)) != E_Type.Ground)
 						a.discard();
@@ -191,7 +147,7 @@ class Level extends Sprite {
 						map.render(map.current);
 						SoundManager.me.playSound(SM.SND_DIG);
 					}
-				/*case E_Action.AMine:
+				case E_Action.AMine:
 					switch (robot.facing) {
 						case Robot.FACING_LEFT:		rxt -= 1;
 						case Robot.FACING_RIGHT:	rxt += 1;
@@ -218,7 +174,7 @@ class Level extends Sprite {
 						map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.BushCut));
 						map.render(map.current);
 						SoundManager.me.playSound(SM.SND_SAW);
-					}*/
+					}
 				default:
 			}
 			
@@ -259,6 +215,74 @@ class Level extends Sprite {
 		
 		//SoundManager.me.tick++;
 		//FTimer.delay(nextTurn, Game.TURN_DELAY);
+	}
+	
+	function moveRobot (p:IntPoint) :IntPoint {
+		var rxt = Std.int(robot.xTarget / Game.TILE_SIZE) + p.x + map.current.x;
+		var ryt = Std.int(robot.yTarget / Game.TILE_SIZE) + p.y + map.current.y;
+		
+		var tileType = MapData.getType(map.pixelData.getPixel(rxt, ryt));
+		switch (tileType) {
+			case E_Type.Ore:
+				return null;
+			case E_Type.Rock:
+				if (ActionManager.canMine) {
+					if (p.x == 1)		ActionManager.insertAction(E_Action.ARight(1), false);
+					else if (p.x == -1)	ActionManager.insertAction(E_Action.ALeft(1), false);
+					else if (p.y == -1)	ActionManager.insertAction(E_Action.AUp(1), false);
+					else if (p.y == 1)	ActionManager.insertAction(E_Action.ADown(1), false);
+					ActionManager.insertAction(E_Action.AMine);
+				}
+				return null;
+			case E_Type.Bush:
+				if (ActionManager.canSaw) {
+					if (p.x == 1)		ActionManager.insertAction(E_Action.ARight(1), false);
+					else if (p.x == -1)	ActionManager.insertAction(E_Action.ALeft(1), false);
+					else if (p.y == -1)	ActionManager.insertAction(E_Action.AUp(1), false);
+					else if (p.y == 1)	ActionManager.insertAction(E_Action.ADown(1), false);
+					ActionManager.insertAction(E_Action.ASaw);
+				}
+				return null;
+			/*case E_Type.Water:
+				if (ActionManager.canSwim) {
+					if (p.x == 1)		ActionManager.insertAction(E_Action.ARight(1), false);
+					else if (p.x == -1)	ActionManager.insertAction(E_Action.ALeft(1), false);
+					else if (p.y == -1)	ActionManager.insertAction(E_Action.AUp(1), false);
+					else if (p.y == 1)	ActionManager.insertAction(E_Action.ADown(1), false);
+					ActionManager.insertAction(E_Action.ASwim);
+				}
+				return null;*/
+			default:
+		}
+		
+		if (p.x != 0 && robot.xTarget != robotCenter.x) {
+			var newPosX:Float = robot.xTarget + p.x * Game.TILE_SIZE;
+			newPosX = Math.max(-container.x, newPosX);
+			newPosX = Math.min((Game.REAL_MAP_SIZE.width - 1) * Game.TILE_SIZE + container.x, newPosX);
+			if (newPosX != robot.xTarget) {
+				robot.xTarget = Std.int(newPosX);
+				p.x = 0;
+			}
+			else return null;
+		}
+		if (p.y != 0 && robot.yTarget != robotCenter.y) {
+			var newPosY:Float = robot.yTarget + p.y * Game.TILE_SIZE;
+			newPosY = Math.max(-container.y, newPosY);
+			newPosY = Math.min((Game.REAL_MAP_SIZE.height - 1) * Game.TILE_SIZE + container.y, newPosY);
+			if (newPosY != robot.yTarget) {
+				robot.yTarget = Std.int(newPosY);
+				p.y = 0;
+			}
+			else return null;
+		}
+		return p;
+	}
+	
+	public function getTypeUnderRobot () :E_Type {
+		var rxt = Std.int(robot.xTarget / Game.TILE_SIZE) + map.current.x;
+		var ryt = Std.int(robot.yTarget / Game.TILE_SIZE) + map.current.y;
+		var t = MapData.getType(map.pixelData.getPixel(rxt, ryt));
+		return t;
 	}
 	
 	function autoDestruct () {

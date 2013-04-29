@@ -58,7 +58,7 @@ class Game extends Sprite {
 		me = this;
 		
 		REAL_MAP_SIZE = new IntRect(0, 0, Std.int(SIZE.width / TILE_SIZE) + 4, Std.int(SIZE.height / TILE_SIZE) + 4);
-		RAND = new Rand(123874560);
+		RAND = new Rand(Std.random(99999999));
 		
 		FrameManager.store(SHEET_TILES, new TilesBD(0, 0), Resource.getString("tilesJson"));
 		
