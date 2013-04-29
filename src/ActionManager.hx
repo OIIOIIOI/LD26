@@ -12,7 +12,7 @@ class ActionManager {
 	static public var nextAction(getNextAction, null):Action;
 	
 	static public var canMine:Bool = true;
-	static public var canSaw:Bool = false;
+	static public var canSaw:Bool = true;
 	
 	static public function init () {
 		cycle = new Array<Action>();
@@ -88,6 +88,7 @@ class ActionManager {
 }
 
 class Action {
+	
 	public var type:E_Action;
 	public var isAvailable:Bool;
 	public var temp:Bool;
@@ -101,6 +102,7 @@ class Action {
 		this.hide = hide;
 		isAvailable = true;
 	}
+	
 	public function discard (all:Bool = true) {
 		isAvailable = false;
 		if (!all)	return;
@@ -114,9 +116,11 @@ class Action {
 			}
 		}
 	}
+	
 	public function toString () {
 		return "[Action] " + type + ", temp:" + temp + ", isAvailable:" + isAvailable + "\n";
 	}
+	
 }
 
 enum E_Action {

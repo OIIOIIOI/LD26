@@ -13,6 +13,7 @@ class GameEvent extends Event {
 	inline static public var PAINT_ENTITY:String = "paint_entity";
 	inline static public var SPAWN_ENTITY:String = "spawn_entity";
 	inline static public var KILL_ENTITY:String = "kill_entity";
+	inline static public var SND_TICK:String = "snd_tick";
 	
 	public var data:Dynamic;
 	

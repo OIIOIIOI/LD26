@@ -1,6 +1,10 @@
 package ui;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
+import flash.text.AntiAliasType;
+import flash.text.TextField;
+import flash.text.TextFormat;
+import SoundManager;
 
 /**
  * ...
@@ -15,6 +19,17 @@ class TitleState extends State {
 		super();
 		
 		button = new Button();
+		
+		/*var tf:TextField = new TextField();
+		tf.embedFonts = true;
+		tf.antiAliasType = AntiAliasType.ADVANCED;
+		tf.selectable = false;
+		tf.multiline = false;
+		tf.defaultTextFormat = new TextFormat("OrbMedium", 60);
+		tf.text = "Start";
+		tf.width = 200;
+		tf.y = 100;
+		addChild(tf);*/
 	}
 	
 	override public function activate () :Void {
@@ -22,6 +37,9 @@ class TitleState extends State {
 		
 		button.addEventListener(MouseEvent.CLICK, clickHandler);
 		addChild(button);
+		
+		SoundManager.me.start();
+		SoundManager.me.selectTrack();
 	}
 	
 	override public function update () :Void {

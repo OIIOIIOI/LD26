@@ -15,6 +15,7 @@ import flash.errors.Error;
 import flash.events.Event;
 import flash.geom.Point;
 import flash.ui.Keyboard;
+import SoundManager;
 import utils.DepthManager;
 import utils.FTimer;
 import utils.IntPoint;
@@ -91,8 +92,8 @@ class Level extends Sprite {
 	}
 	
 	public function start () {
-		//EventManager.instance.addEventListener(GE.PAINT_ENTITY, eventHandler);
-		FTimer.delay(nextTurn, 12);
+		EventManager.instance.addEventListener(GE.SND_TICK, nextTurn);
+		//FTimer.delay(nextTurn, 12);
 	}
 	
 	public function update () {
@@ -154,100 +155,109 @@ class Level extends Sprite {
 		return p;
 	}
 	
-	function nextTurn () {
-		//trace("next turn");
+	function nextTurn (e:GameEvent) {
 		if (!ActionManager.isStillRunning()) {
 			autoDestruct();
 			return;
 		}
 		
-		var rxt = Std.int(robot.xTarget / Game.TILE_SIZE) + map.current.x;
-		var ryt = Std.int(robot.yTarget / Game.TILE_SIZE) + map.current.y;
-		var sx = 0;
-		var sy = 0;
-		
-		var a = ActionManager.nextAction;
-		if (a == null)	autoDestruct();
-		switch (a.type) {
-			case E_Action.ARight(n):
-				robot.facing = Robot.FACING_RIGHT;
-				sx += 1;
-			case E_Action.ALeft(n):
-				robot.facing = Robot.FACING_LEFT;
-				sx -= 1;
-			case E_Action.AUp(n):
-				robot.facing = Robot.FACING_UP;
-				sy -= 1;
-			case E_Action.ADown(n):
-				robot.facing = Robot.FACING_DOWN;
-				sy += 1;
-			case E_Action.ADig:
-				if (MapData.getType(map.pixelData.getPixel(rxt, ryt)) != E_Type.Ground)
-					a.discard();
-				else {
-					map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.GroundDug));
-					map.render(map.current);
-				}
-			case E_Action.AMine:
-				switch (robot.facing) {
-					case Robot.FACING_LEFT:		rxt -= 1;
-					case Robot.FACING_RIGHT:	rxt += 1;
-					case Robot.FACING_UP:		ryt -= 1;
-					case Robot.FACING_DOWN:		ryt += 1;
-				}
-				if (MapData.getType(map.pixelData.getPixel(rxt, ryt)) != E_Type.Rock)
-					a.discard();
-				else {
-					map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.RockMined));
-					map.render(map.current);
-				}
-			case E_Action.ASaw:
-				switch (robot.facing) {
-					case Robot.FACING_LEFT:		rxt -= 1;
-					case Robot.FACING_RIGHT:	rxt += 1;
-					case Robot.FACING_UP:		ryt -= 1;
-					case Robot.FACING_DOWN:		ryt += 1;
-				}
-				if (MapData.getType(map.pixelData.getPixel(rxt, ryt)) != E_Type.Bush)
-					a.discard();
-				else {
-					map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.BushCut));
-					map.render(map.current);
-				}
-		}
-		
-		if (sx != 0 || sy != 0) {
-			// Place the robot back in the center if possible
-			var p = moveRobot(new IntPoint(sx, sy));
-			// null means the action was not possible and must be discarded
-			if (p == null)	a.discard(false);
-			else {
-				// Scroll the map if possible
-				if (p.x != 0 || p.y != 0) {
-					p = map.scroll(p);
-				} else {
-					map.render(map.current);
-				}
-				// If there still is scroll left, move the robot
-				if (p.x != 0) {
-					var newPosX:Float = robot.xTarget + p.x * Game.TILE_SIZE;
-					newPosX = Math.max(-container.x, newPosX);
-					newPosX = Math.min((Game.REAL_MAP_SIZE.width - 1) * Game.TILE_SIZE + container.x, newPosX);
-					if (newPosX != robot.xTarget) {
-						robot.xTarget = Std.int(newPosX);
+		if (!SoundManager.me.delayed) {
+			
+			var rxt = Std.int(robot.xTarget / Game.TILE_SIZE) + map.current.x;
+			var ryt = Std.int(robot.yTarget / Game.TILE_SIZE) + map.current.y;
+			var sx = 0;
+			var sy = 0;
+			
+			var a = ActionManager.nextAction;
+			if (a == null)	autoDestruct();
+			switch (a.type) {
+				case E_Action.ARight(n):
+					robot.facing = Robot.FACING_RIGHT;
+					sx += 1;
+				case E_Action.ALeft(n):
+					robot.facing = Robot.FACING_LEFT;
+					sx -= 1;
+				case E_Action.AUp(n):
+					robot.facing = Robot.FACING_UP;
+					sy -= 1;
+				case E_Action.ADown(n):
+					robot.facing = Robot.FACING_DOWN;
+					sy += 1;
+				case E_Action.ADig:
+					if (MapData.getType(map.pixelData.getPixel(rxt, ryt)) != E_Type.Ground)
+						a.discard();
+					else {
+						map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.GroundDug));
+						map.render(map.current);
+						SoundManager.me.playSound(SM.SND_DIG);
 					}
-				}
-				if (p.y != 0) {
-					var newPosY:Float = robot.yTarget + p.y * Game.TILE_SIZE;
-					newPosY = Math.max(-container.y, newPosY);
-					newPosY = Math.min((Game.REAL_MAP_SIZE.height - 1) * Game.TILE_SIZE + container.y, newPosY);
-					if (newPosY != robot.yTarget) {
-						robot.yTarget = Std.int(newPosY);
+				case E_Action.AMine:
+					switch (robot.facing) {
+						case Robot.FACING_LEFT:		rxt -= 1;
+						case Robot.FACING_RIGHT:	rxt += 1;
+						case Robot.FACING_UP:		ryt -= 1;
+						case Robot.FACING_DOWN:		ryt += 1;
+					}
+					if (MapData.getType(map.pixelData.getPixel(rxt, ryt)) != E_Type.Rock)
+						a.discard();
+					else {
+						map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.RockMined));
+						map.render(map.current);
+						SoundManager.me.playSound(SM.SND_MINE);
+					}
+				case E_Action.ASaw:
+					switch (robot.facing) {
+						case Robot.FACING_LEFT:		rxt -= 1;
+						case Robot.FACING_RIGHT:	rxt += 1;
+						case Robot.FACING_UP:		ryt -= 1;
+						case Robot.FACING_DOWN:		ryt += 1;
+					}
+					if (MapData.getType(map.pixelData.getPixel(rxt, ryt)) != E_Type.Bush)
+						a.discard();
+					else {
+						map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.BushCut));
+						map.render(map.current);
+						SoundManager.me.playSound(SM.SND_SAW);
+					}
+			}
+			
+			if (sx != 0 || sy != 0) {
+				// Place the robot back in the center if possible
+				var p = moveRobot(new IntPoint(sx, sy));
+				// null means the action was not possible and must be discarded
+				if (p == null)	a.discard(false);
+				else {
+					// Scroll the map if possible
+					if (p.x != 0 || p.y != 0) {
+						p = map.scroll(p);
+					} else {
+						map.render(map.current);
+					}
+					// If there still is scroll left, move the robot
+					if (p.x != 0) {
+						var newPosX:Float = robot.xTarget + p.x * Game.TILE_SIZE;
+						newPosX = Math.max(-container.x, newPosX);
+						newPosX = Math.min((Game.REAL_MAP_SIZE.width - 1) * Game.TILE_SIZE + container.x, newPosX);
+						if (newPosX != robot.xTarget) {
+							robot.xTarget = Std.int(newPosX);
+						}
+					}
+					if (p.y != 0) {
+						var newPosY:Float = robot.yTarget + p.y * Game.TILE_SIZE;
+						newPosY = Math.max(-container.y, newPosY);
+						newPosY = Math.min((Game.REAL_MAP_SIZE.height - 1) * Game.TILE_SIZE + container.y, newPosY);
+						if (newPosY != robot.yTarget) {
+							robot.yTarget = Std.int(newPosY);
+						}
 					}
 				}
 			}
+			
 		}
-		FTimer.delay(nextTurn, Game.TURN_DELAY);
+		//else SoundManager.me.delayed = false;
+		
+		//SoundManager.me.tick++;
+		//FTimer.delay(nextTurn, Game.TURN_DELAY);
 	}
 	
 	function autoDestruct () {
