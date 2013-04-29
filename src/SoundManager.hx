@@ -35,6 +35,7 @@ class SoundManager {
 	var queue:Array<String>;
 	
 	public var delayed:Bool;
+	public var currentTheme:String;
 	
 	static public var me:SoundManager;
 	
@@ -85,6 +86,8 @@ class SoundManager {
 		sp.s = new Sound();
 		sp.s.loadCompressedDataFromByteArray(data.getData(), data.length);
 		SOUNDS.set("SndSaw", sp);
+		
+		currentTheme = null;
 	}
 	
 	public function start () {
@@ -118,7 +121,6 @@ class SoundManager {
 		else delayed = false;
 		tick++;
 		FTimer.delay(soundTick, 10);
-		//trace("SND_TICK");
 		EventManager.instance.dispatchEvent(new GameEvent(GE.SND_TICK));
 	}
 	
@@ -130,18 +132,17 @@ class SoundManager {
 		switch (trk) {
 			case TRK_MENU:	menu.c.soundTransform = new SoundTransform(1);
 			case TRK_EXPLO:	explo.c.soundTransform = new SoundTransform(1);
-			case TRK_WATER:	water.c.soundTransform = new SoundTransform(1);
+			case TRK_WATER:	water.c.soundTransform = new SoundTransform(2);
 		}
+		currentTheme = trk;
 	}
 	
 	public function playSound (s:String) {
-		//if (queue.length == 0)
 		queue.push(s);
 	}
 	
 	function playSnd (s:String) {
 		if (SOUNDS.exists(s)) {
-			//delayed = true;
 			SOUNDS.get(s).c = SOUNDS.get(s).s.play(0);
 		}
 	}

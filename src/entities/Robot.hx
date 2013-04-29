@@ -27,8 +27,11 @@ class Robot extends Entity {
 		if (Math.abs(y - yTarget) < Game.SMOOTH_CUT)	y = yTarget;
 		else											y -= (y - yTarget) * Game.SMOOTH_MOD;
 		
-		trace(Level.me.getTypeUnderRobot());
-		//trace("ROBOT " + x + " / " + xTarget);
+		var t = Level.me.getTypeUnderRobot();
+		if (t == E_Type.Water && SoundManager.me.currentTheme != SoundManager.TRK_WATER)
+			SoundManager.me.selectTrack(SoundManager.TRK_WATER);
+		else if (t != E_Type.Water && SoundManager.me.currentTheme == SoundManager.TRK_WATER)
+			SoundManager.me.selectTrack(SoundManager.TRK_EXPLO);
 	}
 	
 	function setFacing (f:String) :String {

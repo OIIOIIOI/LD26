@@ -17,8 +17,8 @@ class ActionManager {
 	static public var canSwim:Bool;
 	
 	static public function init () {
-		//canMine = canSaw = canSwim = false;
-		canMine = canSaw = canSwim = true;
+		canMine = canSaw = canSwim = false;
+		//canMine = canSaw = canSwim = true;
 		cycle = new Array<Action>();
 		cycleIndex = 0;
 	}
