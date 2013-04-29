@@ -26,6 +26,8 @@ class Robot extends Entity {
 		else											x -= (x - xTarget) * Game.SMOOTH_MOD;
 		if (Math.abs(y - yTarget) < Game.SMOOTH_CUT)	y = yTarget;
 		else											y -= (y - yTarget) * Game.SMOOTH_MOD;
+		
+		//trace("ROBOT " + x + " / " + xTarget);
 	}
 	
 	function setFacing (f:String) :String {
@@ -34,6 +36,19 @@ class Robot extends Entity {
 		for (i in 0...5)	frames.push("robot_" + facing + "_0");
 		for (i in 0...5)	frames.push("robot_" + facing + "_1");
 		return f;
+	}
+	
+	public function autoDestruct () {
+		while (frames.length > 0)	frames.shift();
+		for (i in 0...3)	frames.push("robot_up_0");
+		for (i in 0...3)	frames.push("robot_left_0");
+		for (i in 0...3)	frames.push("robot_right_0");
+		for (i in 0...3)	frames.push("robot_up_0");
+		for (i in 0...3)	frames.push("robot_down_0");
+		for (i in 0...3)	frames.push("robot_right_0");
+		for (i in 0...3)	frames.push("robot_down_0");
+		for (i in 0...3)	frames.push("robot_left_0");
+		for (i in 0...3)	frames.push("robot_down_0");
 	}
 	
 }

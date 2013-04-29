@@ -18,7 +18,7 @@ import utils.Rand;
 
 class Map extends Sprite {
 	
-	public var pixelData:BitmapData;
+	public var pixelData:MapData;
 	var data:BitmapData;
 	var bitmap:Bitmap;
 	
@@ -103,9 +103,9 @@ class Map extends Sprite {
 				// Additional graph
 				var t = MapData.getType(gp(realX, realY));
 				switch (t) {
-					case E_Type.Ore, E_Type.Bush, E_Type.BushCut, E_Type.RockMined:
-						FM.copyFrame(data, getTile(E_Type.Ground, uid), Game.SHEET_TILES, Game.TAP);
-						FM.copyFrame(data, getTile(t,uid),Game.SHEET_TILES, Game.TAP);
+					//case E_Type.Ore, E_Type.Bush, E_Type.BushCut, E_Type.RockMined:
+						//FM.copyFrame(data, getTile(E_Type.Ground, uid), Game.SHEET_TILES, Game.TAP);
+						//FM.copyFrame(data, getTile(t,uid),Game.SHEET_TILES, Game.TAP);
 					case E_Type.Rock:
 						rockIDnum = 0;
 						if(MapData.getType(gp(realX, realY  - 1)) == E_Type.Rock)	rockIDnum += 1;
@@ -155,6 +155,7 @@ class Map extends Sprite {
 						
 					default:
 						FM.copyFrame(data, getTile(E_Type.Ground, uid), Game.SHEET_TILES, Game.TAP);
+						FM.copyFrame(data, getTile(t, uid), Game.SHEET_TILES, Game.TAP);
 				}
 			}
 		}
@@ -167,6 +168,7 @@ class Map extends Sprite {
 		else				rand = new Rand(123456);
 		return switch (type) {
 			case E_Type.Ground:	"ground" + rand.random(3);
+			case E_Type.GroundDug:	"dug";
 			case E_Type.Rock:	"rock"+ rockIDnum;
 			case E_Type.RockMined:"oreMined" + rand.random(3);
 			//case E_Type.Rock:	"rock0";

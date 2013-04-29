@@ -14,6 +14,7 @@ class ExploState extends State {
 	override public function activate () :Void {
 		super.activate();
 		addChild(Level.me);
+		Level.me.start();
 	}
 	
 	override public function update () :Void {

@@ -2,6 +2,7 @@ package ;
 import flash.display.BitmapData;
 import flash.geom.Point;
 import Math;
+import utils.IntPoint;
 import utils.Rand;
 import Data;
 
@@ -13,6 +14,7 @@ import Data;
 class MapData extends BitmapData {
 	
 	static public var C_GROUND:UInt =	0xFFFFFF;
+	static public var C_GROUNDDUG:UInt =0xEEEEEE;
 	static public var C_ROCK:UInt =		0x000000;
 	static public var C_ROCKMINED:UInt =0x111111;
 	static public var C_ORE:UInt =		0xFF0000;
@@ -26,6 +28,8 @@ class MapData extends BitmapData {
 	public var riftperlmap:BitmapData;
 	public var bushperlmap :BitmapData;
 	var seed:Int;
+	
+	public var playerStart:IntPoint;
 	
 	public function new (seed:Int) {
 		
@@ -42,7 +46,6 @@ class MapData extends BitmapData {
 		rockperlmap.perlinNoise(10, 10, 1, RAND.random(50000000), false, true, 7, true);
 		riftperlmap = rockperlmap.clone();
 		
-		
 		bushperlmap = new BitmapData(Game.MAP_SIZE.width, Game.MAP_SIZE.height, true);
 		bushperlmap.perlinNoise(bushperlmap.width /4, bushperlmap.height /4, 1, RAND.random(50000000), false, true, 7, true);
 		bushperlmap.threshold(bushperlmap, bushperlmap.rect, new Point(), "<=", 0xFF808080,0xFF000000);
@@ -52,8 +55,19 @@ class MapData extends BitmapData {
 		spawnRift();
 		
 		var surface = Game.MAP_SIZE.width * Game.MAP_SIZE.height;
-		for (i in 0...Std.int(surface*0.007))	spawnOre();
-		for (i in 0...Std.int(surface*0.05))	spawnBush();
+		for (i in 0...Std.int(surface * 0.007))	spawnOre();
+		for (i in 0...Std.int(surface * 0.05))	spawnBush();
+		
+		var mapCenter:IntPoint = new IntPoint(Std.int(Game.MAP_SIZE.width / 2), Std.int(Game.MAP_SIZE.height / 2));
+		playerStart = mapCenter.clone();
+		var safety:Int = 100;
+		while (getPixel(playerStart.x, playerStart.y) != C_GROUND && safety > 0) {
+			playerStart.x = mapCenter.x + RAND.random(17) - 8;
+			playerStart.y = mapCenter.y + RAND.random(17) - 8;
+			safety--;
+		}
+		if (safety == 0) return;
+		setPixel(playerStart.x, playerStart.y, 0xFF808080);
 	}
 	
 	public function spawnDefault (type:E_Type,perlcon:Bool,perlconBW:UInt){
@@ -115,6 +129,7 @@ class MapData extends BitmapData {
 	static public function getColor (type:E_Type) : UInt {
 		return switch (type) {
 			case E_Type.Ground:	C_GROUND;
+			case E_Type.GroundDug:	C_GROUNDDUG;
 			case E_Type.Rock:	C_ROCK;
 			case E_Type.RockMined:	C_ROCKMINED;
 			case E_Type.Ore:	C_ORE;
@@ -132,6 +147,7 @@ class MapData extends BitmapData {
 			case C_BUSH:	E_Type.Bush;
 			case C_BUSHCUT:	E_Type.BushCut;
 			case C_RIFT:	E_Type.Rift;
+			case C_GROUNDDUG:	E_Type.GroundDug;
 			default:	E_Type.Ground;
 		}
 	}
