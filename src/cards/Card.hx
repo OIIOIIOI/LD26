@@ -29,6 +29,7 @@ class Card
 			case E_Card.avancergauche: costperlvl = 200;
 			case E_Card.creuser: costperlvl = 500;
 		}
+		return costperlvl;
 	}
 	
 	public function new(newtype:E_Card) 

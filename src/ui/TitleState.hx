@@ -14,7 +14,7 @@ class TitleState extends State {
 	public function new () {
 		super();
 		
-		button = new Button();
+		button = new Button(50,50,"base");
 	}
 	
 	override public function activate () :Void {
