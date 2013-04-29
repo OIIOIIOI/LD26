@@ -14,19 +14,19 @@ class CardStack
 	public function addCard(newcard:Card):Void {
 		cardlist.push(newcard);
 	}
-	public function randomcard() {
+	public function randomcard() :Card {
 		var selectedCard :Card = cardlist[Std.random(cardlist.length)];
 		return selectedCard;
 	}
 	
-	public function getCard(index:Int) {
+	public function getCard(index:Int) :Card {
 		var selectedCard :Card = cardlist[index];
 		return selectedCard;
 	}
 	
 	public function pickCards (deck:CardStack):Void {
 		if(stckCrdType == E_CardStackType.pioche && deck.stckCrdType == E_CardStackType.deck){
-			var tempdeck = deck;
+			var tempdeck = deck.clone();
 			var pickedCard:Card;
 			for (i in 0...nbofCards) {
 				if (cardlist[i] != null)	cardlist[i].dansPioche = false;
@@ -41,8 +41,17 @@ class CardStack
 		}
 	}
 	
+	public function clone () :CardStack {
+		var cs = new CardStack(this.stckCrdType);
+		while (cs.cardlist.length > 0)	cs.cardlist.shift();
+		for (c in cardlist) {
+			cs.addCard(c.clone());
+		}
+		return cs;
+	}
 	
-	public function new(type:E_CardStackType) 
+	
+	public function new(type:E_CardStackType)
 	{
 		switch(type) {
 			case E_CardStackType.deck:	cardlist = new Array();

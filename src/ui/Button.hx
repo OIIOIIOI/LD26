@@ -11,20 +11,28 @@ import anim.FrameManager;
  */
 
 class Button extends Sprite {
+	
 	var btnlookData :BitmapData;
 	var btnlook :Bitmap;
 	
-	public function new (coox:Int,cooy:Int,graphname:String) {
+	public function new (?graphname:String, coox:Int = 0, cooy:Int = 0) {
 		super();
-		//btnlookData = new BitmapData(70, 40);
-		btnlookData = FrameManager.getFrame(graphname,Game.SHEET_TILES);
-		btnlook = new Bitmap(btnlookData);
-		addChild(btnlook);
-		trace(btnlookData);
-		this.x = coox;
-		this.y = cooy;
 		
 		buttonMode = true;
+		
+		if (graphname != null) {
+			btnlookData = FrameManager.getFrame(graphname,Game.SHEET_TILES);
+			btnlook = new Bitmap(btnlookData);
+			addChild(btnlook);
+		}
+		else {
+			graphics.beginFill(0);
+			graphics.drawRect(0, 0, 160, 60);
+			graphics.endFill();
+		}
+		
+		this.x = coox;
+		this.y = cooy;
 	}
 	
 }

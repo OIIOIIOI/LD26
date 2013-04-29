@@ -1,6 +1,8 @@
 package ;
 
 import anim.FrameManager;
+import cards.CardStack;
+import Data;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Point;
@@ -46,6 +48,10 @@ class Game extends Sprite {
 	public var prepaState:PrepaState;
 	public var exploState:ExploState;
 	
+	public var rank:Int;
+	
+	public var deck:CardStack;
+	
 	public function new () {
 		super();
 		
@@ -56,8 +62,15 @@ class Game extends Sprite {
 		
 		FrameManager.store(SHEET_TILES, new TilesBD(0, 0), Resource.getString("tilesJson"));
 		
+		rank = 0;
+		
 		new Level();
 		new SoundManager();
+		
+		deck = new CardStack(E_CardStackType.deck);
+		
+		SoundManager.me.start();
+		SoundManager.me.selectTrack();
 		
 		titleState = new TitleState();
 		prepaState = new PrepaState();

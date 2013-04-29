@@ -18,7 +18,7 @@ class TitleState extends State {
 	public function new () {
 		super();
 		
-		button = new Button(50,50,"base");
+		button = new Button("base",50,50);
 		
 		/*var tf:TextField = new TextField();
 		tf.embedFonts = true;
@@ -37,21 +37,17 @@ class TitleState extends State {
 		
 		button.addEventListener(MouseEvent.CLICK, clickHandler);
 		addChild(button);
-		
-		SoundManager.me.start();
-		SoundManager.me.selectTrack();
-	}
-	
-	override public function update () :Void {
-		super.update();
 	}
 	
 	override public function deactivate () :Void {
 		super.deactivate();
+		
+		button.removeEventListener(MouseEvent.CLICK, clickHandler);
+		removeChild(button);
 	}
 	
 	private function clickHandler (e:MouseEvent) :Void {
-		Game.me.selectState(Game.me.exploState);
+		Game.me.selectState(Game.me.prepaState);
 	}
 	
 }

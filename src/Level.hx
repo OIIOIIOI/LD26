@@ -191,7 +191,7 @@ class Level extends Sprite {
 						map.render(map.current);
 						SoundManager.me.playSound(SM.SND_DIG);
 					}
-				case E_Action.AMine:
+				/*case E_Action.AMine:
 					switch (robot.facing) {
 						case Robot.FACING_LEFT:		rxt -= 1;
 						case Robot.FACING_RIGHT:	rxt += 1;
@@ -218,7 +218,8 @@ class Level extends Sprite {
 						map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.BushCut));
 						map.render(map.current);
 						SoundManager.me.playSound(SM.SND_SAW);
-					}
+					}*/
+				default:
 			}
 			
 			if (sx != 0 || sy != 0) {

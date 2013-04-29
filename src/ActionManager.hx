@@ -1,5 +1,6 @@
 package ;
-
+import cards.Card;
+import Data;
 /**
  * ...
  * @author 01101101
@@ -11,13 +12,12 @@ class ActionManager {
 	static private var cycle:Array<Action>;
 	static public var nextAction(getNextAction, null):Action;
 	
-	static public var canMine:Bool = true;
-	static public var canSaw:Bool = true;
+	static public var canMine:Bool = false;
+	static public var canSaw:Bool = false;
 	
 	static public function init () {
+		canMine = canSaw = false;
 		cycle = new Array<Action>();
-		pushAction(ALeft(2));
-		pushAction(ADown(4));
 		cycleIndex = 0;
 	}
 	
@@ -77,12 +77,28 @@ class ActionManager {
 					a.childs.push(aa);
 					cycle.push(aa);
 				}
+			case AMine:	canMine = true;
+			case ASaw:	canSaw = true;
 			default:
 		}
 	}
 	
 	static public function insertAction (type:E_Action, temp:Bool = true) {
 		cycle.insert(cycleIndex, new Action(type, temp, true));
+	}
+	
+	static public function getActionFromCard (card:Card) :E_Action {
+		return switch (card.type) {
+			case avancerhaut:	E_Action.AUp(card.level+1);
+			case avancerbas:	E_Action.ADown(card.level+1);
+			case avancergauche:	E_Action.ALeft(card.level+1);
+			case avancerdroite:	E_Action.ARight(card.level+1);
+			case scie:			E_Action.ASaw;
+			case bouee:			E_Action.ASwim;
+			case creuser:		E_Action.ADig;
+			case foreuse:		E_Action.AMine;
+			default:
+		}
 	}
 	
 }
@@ -131,6 +147,7 @@ enum E_Action {
 	ADig;
 	AMine;
 	ASaw;
+	ASwim;
 }
 
 
