@@ -20,6 +20,17 @@ class Card
 		level = 0;
 	}
 	
+	public function getUpgradeCost () {
+		var costperlvl :Int;
+		switch(type) {
+			case E_Card.avancerhaut: costperlvl = 200;
+			case E_Card.avancerbas: costperlvl = 200;
+			case E_Card.avancerdroite: costperlvl = 200;
+			case E_Card.avancergauche: costperlvl = 200;
+			case E_Card.creuser: costperlvl = 500;
+		}
+	}
+	
 	public function new(newtype:E_Card) 
 	{
 		switch(newtype) {
@@ -37,4 +48,4 @@ class Card
 		dansPioche = true;
 	}
 	
-}
+	
