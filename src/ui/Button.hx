@@ -1,6 +1,9 @@
 package ui;
 
+import flash.display.Bitmap;
+import flash.display.BitmapData;
 import flash.display.Sprite;
+import anim.FrameManager;
 
 /**
  * ...
@@ -8,13 +11,18 @@ import flash.display.Sprite;
  */
 
 class Button extends Sprite {
+	var btnlookData :BitmapData;
+	var btnlook :Bitmap;
 	
-	public function new () {
+	public function new (coox:Int,cooy:Int,graphname:String) {
 		super();
-		graphics.beginFill(0);
-		graphics.drawRect(0, 0, 150, 30);
-		graphics.endFill();
-		buttonMode = true;
+		//btnlookData = new BitmapData(70, 40);
+		btnlookData = FrameManager.getFrame(graphname,Game.SHEET_TILES);
+		btnlook = new Bitmap(btnlookData);
+		addChild(btnlook);
+		trace(btnlookData);
+		this.x = coox;
+		this.y = cooy;
 	}
 	
 }

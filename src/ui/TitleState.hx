@@ -18,7 +18,7 @@ class TitleState extends State {
 	public function new () {
 		super();
 		
-		button = new Button();
+		button = new Button(50,50,"base");
 		
 		/*var tf:TextField = new TextField();
 		tf.embedFonts = true;
