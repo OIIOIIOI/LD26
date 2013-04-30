@@ -25,6 +25,7 @@ class ExploState extends State {
 	override public function update () :Void {
 		super.update();
 		Level.me.update();
+		MainUI.me.update();
 	}
 	
 	override public function deactivate () :Void {

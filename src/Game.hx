@@ -5,6 +5,7 @@ import cards.CardStack;
 import Data;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import haxe.Resource;
@@ -22,6 +23,8 @@ import utils.Rand;
  * @author 01101101
  */
 
+@:bitmap("bin/title_screen.png") class TitleBD extends flash.display.BitmapData { }
+@:bitmap("bin/ui_bg.png") class UIBD extends flash.display.BitmapData { }
 @:bitmap("bin/tiles.png") class TilesBD extends flash.display.BitmapData { }
 
 class Game extends Sprite {
@@ -38,6 +41,7 @@ class Game extends Sprite {
 	static public var RAND:Rand;
 	static public var TAP:Point = new Point();
 	static public var TAR:Rectangle = new Rectangle();
+	static public var TAM:Matrix = new Matrix();
 	
 	static public var tick:Int;
 	static public var me:Game;

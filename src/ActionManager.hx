@@ -1,6 +1,7 @@
 package ;
 import cards.Card;
 import Data;
+import ui.MainUI;
 /**
  * ...
  * @author 01101101
@@ -8,8 +9,8 @@ import Data;
 
 class ActionManager {
 	
-	static private var cycleIndex:Int;
-	static private var cycle:Array<Action>;
+	static public var cycleIndex:Int;
+	static public var cycle:Array<Action>;
 	static public var nextAction(getNextAction, null):Action;
 	
 	static public var canMine:Bool;
@@ -134,6 +135,7 @@ class Action {
 				if (c.isAvailable)	c.discard();
 			}
 		}
+		MainUI.me.dirty = true;
 	}
 	
 	public function toString () {

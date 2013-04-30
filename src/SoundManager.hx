@@ -19,6 +19,7 @@ class SoundManager {
 	static public var SND_DIG:String = "SndDig";
 	static public var SND_SAW:String = "SndSaw";
 	static public var SND_MINE:String = "SndMine";
+	static public var SND_DEAD:String = "SndDead";
 	
 	static public var TRK_MENU:String = "TrkMenu";
 	static public var TRK_EXPLO:String = "TrkExplo";
@@ -87,6 +88,12 @@ class SoundManager {
 		sp.s.loadCompressedDataFromByteArray(data.getData(), data.length);
 		SOUNDS.set("SndSaw", sp);
 		
+		sp = { s:null, c:null };
+		data = Resource.getBytes("SndDead");
+		sp.s = new Sound();
+		sp.s.loadCompressedDataFromByteArray(data.getData(), data.length);
+		SOUNDS.set("SndDead", sp);
+		
 		currentTheme = null;
 	}
 	
@@ -111,10 +118,10 @@ class SoundManager {
 			while (queue.length > 0) {
 				var s = queue.shift();
 				if (tick % 2 == 0) {
-					playSnd(s);
+					playSound(s);
 				} else {
 					delayed = true;
-					FTimer.delay(callback(playSnd, s), 10);
+					FTimer.delay(callback(playSound, s), 10);
 				}
 			}
 		}
@@ -137,11 +144,11 @@ class SoundManager {
 		currentTheme = trk;
 	}
 	
-	public function playSound (s:String) {
+	public function queueSound (s:String) {
 		queue.push(s);
 	}
 	
-	function playSnd (s:String) {
+	public function playSound (s:String) {
 		if (SOUNDS.exists(s)) {
 			SOUNDS.get(s).c = SOUNDS.get(s).s.play(0);
 		}

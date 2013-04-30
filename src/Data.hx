@@ -22,6 +22,7 @@ enum E_Type {
 	Bush;
 	BushCut;
 	Water;
+	Base;
 }
 
 enum E_Entity {

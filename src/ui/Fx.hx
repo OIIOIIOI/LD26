@@ -1,12 +1,11 @@
 package ui;
 import anim.FrameManager;
-import api.AKApi;
 import flash.display.BlendMode;
 import flash.display.Sprite;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.geom.ColorTransform;
-import mt.DepthManager;
+import utils.DepthManager;
 
 import mt.deepnight.Particle;
 import mt.deepnight.Lib;
@@ -34,18 +33,11 @@ class Fx {
 	
 	public function new(dm:DepthManager) {
 		this.dm = dm;
-		#if !standalone
-		lowq = api.AKApi.isLowQuality();
-		#end
 		
-		Particle.LIMIT = lowq ? 30 : 150;
+		Particle.LIMIT = 150;
 		#if debug
 		Particle.LIMIT = 99999; // HACK
 		#end
-		
-		sandBD = FM.getFrame("sand_4", Game.SHEET_ROAD);
-		skullBD = FM.getFrame("skullBoss", Game.SHEET_ROAD);
-		//shine = new BitmapData(40, 10, true, 0x00FF00FF);
 		
 		tick = 0;
 		
@@ -61,7 +53,7 @@ class Fx {
 	inline function rnd(min,max,?sign) { return Lib.rnd(min,max,sign); }
 	inline function irnd(min,max,?sign) { return Lib.irnd(min,max,sign); }
 	
-	public function smokeExplosion (x, y) {
+	/*public function smokeExplosion (x, y) {
 		for (i in 0...7) {
 			var p = new Particle(x + rnd(0, 3, true), y + rnd(0, 3, true));
 			p.drawCircle(rnd(7, 15), 0x000000, rnd(0.4, 0.7));
@@ -72,9 +64,9 @@ class Fx {
 			p.life = rnd(3, 7);
 			register(p, BlendMode.NORMAL);
 		}
-	}
+	}*/
 	
-	public function paint (x, y) {
+	/*public function paint (x, y) {
 		for (i in 0...7) {
 			var p = new Particle(x + rnd(0, 3, true), y + rnd(0, 3, true));
 			var col = switch (Std.random(4)) {
@@ -91,9 +83,9 @@ class Fx {
 			p.life = 10;
 			register(p, BlendMode.NORMAL);
 		}
-	}
+	}*/
 	
-	public function heal (x, y) {
+	/*public function heal (x, y) {
 		var p = new Particle(x,y);
 		var s = new Sprite();
 		p.addChild(s);
@@ -115,9 +107,9 @@ class Fx {
 		}
 		p.life = 0;
 		register(p);
-	}
+	}*/
 	
-	public function smoke (x,y, col) {
+	/*public function smoke (x,y, col) {
 		for( i in 0...2 ) {
 			var p = new Particle(x + rnd(0, 3, true), y + rnd(0, 3, true));
 			p.drawCircle(rnd(3,5), col, rnd(0.4, 0.7));
@@ -128,9 +120,9 @@ class Fx {
 			p.life = rnd(5,10);
 			register(p, BlendMode.NORMAL);
 		}
-	}
+	}*/
 	
-	public function smokeRear (x,y, col) {
+	/*public function smokeRear (x,y, col) {
 		for( i in 0...1 ) {
 			var p = new Particle(x + rnd(0, 3, true), y + rnd(0, 3, true));
 			p.drawCircle(rnd(3,5), col, rnd(0.1, 0.5));
@@ -141,9 +133,9 @@ class Fx {
 			p.life = rnd(1,5);
 			register(p, BlendMode.NORMAL);
 		}
-	}
+	}*/
 	
-	public function sand (x,y, col) {
+	/*public function sand (x,y, col) {
 		for (i in 0...2) {
 			var p = new Particle(x + rnd(0, 3, true), y + rnd(0, 3, true));
 			p.drawCircle(rnd(8, 15), col, rnd(0.5, 1));
@@ -154,9 +146,9 @@ class Fx {
 			p.life = rnd(5, 10);
 			register(p, BlendMode.NORMAL);
 		}
-	}
+	}*/
 	
-	public function sandTex (x, y, side = 0, count:Int = 1) {
+	/*public function sandTex (x, y, side = 0, count:Int = 1) {
 		for (i in 0...count) {
 			Game.TAM.identity();
 			Game.TAM.translate(-40, -36);
@@ -183,9 +175,9 @@ class Fx {
 			p.life = rnd(5, 10);
 			register(p, BlendMode.NORMAL);
 		}
-	}
+	}*/
 	
-	public function dustTex (x, y, side = 0, count:Int = 1) {
+	/*public function dustTex (x, y, side = 0, count:Int = 1) {
 		for (i in 0...count) {
 			Game.TAM.identity();
 			Game.TAM.translate(-40, -36);
@@ -212,9 +204,9 @@ class Fx {
 			p.life = rnd(5, 10);
 			register(p, BlendMode.SCREEN);
 		}
-	}
+	}*/
 	
-	public function grind (x:Float,y:Float, col, side) {
+	/*public function grind (x:Float,y:Float, col, side) {
 		var p = new Particle(x + rnd(12, 17) * side, y + rnd(0, 1));
 		p.drawBox(1, rnd(30, 50), 0xFFFFFF, rnd(0.4, 0.7));
 		p.filters = [ new flash.filters.GlowFilter(col, 0.9, 1, 10, 4) ];
@@ -241,9 +233,9 @@ class Fx {
 			p.life = 10;
 			register(p, BlendMode.NORMAL);
 		}
-	}
+	}*/
 	
-	public function bulletTrail (x:Float, y:Float, w:Float, d:Int) {
+	/*public function bulletTrail (x:Float, y:Float, w:Float, d:Int) {
 		var p = new Particle(x, y + rnd(0, 4, true));
 		p.graphics.beginFill(0xFFFFFF);
 		p.graphics.drawRect(rnd(3, 12) * d, 0, w - rnd(10, 20), 1);
@@ -254,9 +246,9 @@ class Fx {
 		p.da = -0.3;
 		p.life = 1;
 		register(p);
-	}
+	}*/
 	
-	public function bulletSmoke (x:Float, y:Float) {
+	/*public function bulletSmoke (x:Float, y:Float) {
 		for( i in 0...5 ) {
 			var p = new Particle(x + rnd(0, 3, true), y + rnd(0, 3, true));
 			p.drawCircle(rnd(1, 3), 0xCCCCCC, rnd(0.5, 1));
@@ -268,9 +260,9 @@ class Fx {
 			p.life = rnd(1, 3);
 			register(p, BlendMode.NORMAL);
 		}
-	}
+	}*/
 	
-	public function mineSmoke (x:Float, y:Float) {
+	/*public function mineSmoke (x:Float, y:Float) {
 		for (i in 0...7) {
 			var p = new Particle(x + rnd(0, 3, true), y + rnd(0, 3, true));
 			p.drawCircle(rnd(4, 10), 0xCCCCCC, rnd(0.4, 0.7));
@@ -281,9 +273,9 @@ class Fx {
 			p.life = rnd(1, 3);
 			register(p, BlendMode.NORMAL);
 		}
-	}
+	}*/
 	
-	public function ghostEyes (x:Float, y:Float) {
+	/*public function ghostEyes (x:Float, y:Float) {
 		for (i in 0...3) {
 			var p = new Particle(x - 8, y + i);
 			p.drawBox(3, 2, 0xFF0000, 0.8);
@@ -299,9 +291,9 @@ class Fx {
 			p.life = 3;
 			register(p, BlendMode.NORMAL);
 		}
-	}
+	}*/
 	
-	public function shine (x:Float, y:Float, vy:Float) {
+	/*public function shine (x:Float, y:Float, vy:Float) {
 		if (AKApi.isLowQuality() && tick % 2 == 0)	return;
 		var p = new Particle(x, y);
 		p.graphics.beginFill(0xFFFFFF, 1);
@@ -316,19 +308,19 @@ class Fx {
 		p.dr = rnd(2, 5, true);
 		p.dy = vy;
 		register(p, BlendMode.NORMAL, false, Level.FLOOR_DEPTH);
-	}
+	}*/
 	
 	public function text (txt:String, c:UInt, s:Int, x:Float, y:Float) {
 		var p = new Particle(x, y);
 		var tf = new EmbedText(txt, c, s);
 		p.addChild(tf);
-		p.dy = -3;
+		p.dy = -2;
 		p.life = 15;
 		p.onKill = function () { tf.destroy(); }
 		register(p, BlendMode.NORMAL);
 	}
 	
-	public function turn (x:Float, y:Float, dir:Int, vx:Float, vy:Float) {
+	/*public function turn (x:Float, y:Float, dir:Int, vx:Float, vy:Float) {
 		
 		//TODO balancer des cailloux à la place
 		
@@ -347,9 +339,9 @@ class Fx {
 		p.dx = vx + dir;
 		p.dy = vy + 1;
 		register(p, BlendMode.OVERLAY, false, Level.FLOOR_DEPTH);
-	}
+	}*/
 	
-	public function nova (x:Float, y:Float) {
+	/*public function nova (x:Float, y:Float) {
 		var p = new Particle(x,y);
 		var s = new Sprite();
 		p.addChild(s);
@@ -371,29 +363,9 @@ class Fx {
 		}
 		p.life = 0;
 		register(p);
-	}
-	
-	/*public function emitDark (x:Float, y:Float, ratio:Float) {
-		var c1 = 0xCCCCFF;
-		var c2 = 0x8080FF;
-		var a = rnd(0,6.28);
-		var p = new Particle(x+Math.cos(a)*rnd(16,26), y+Math.sin(a)*rnd(32,42));
-		p.drawCircle(2+rnd(10,15)*ratio, c1, 0.3+rnd(0, 0.3)+0.4*ratio);
-		var s = rnd(5, 8);
-		p.dx = Math.cos(a)*s;
-		p.dy = Math.sin(a)*s;
-		p.life = 2;
-		p.frictX = p.frictY = 0.85;
-		p.ds = -0.06;
-		p.filters = [
-			//new flash.filters.BlurFilter(8,8),
-			new flash.filters.GlowFilter(c2,1, 8,8, 5),
-		];
-		//register(p, BlendMode.MULTIPLY);
-		register(p);
 	}*/
 	
-	public function emitDark (x:Float, y:Float, ratio:Float) {
+	/*public function emitDark (x:Float, y:Float, ratio:Float) {
 		if (rnd(0, 1) > ratio || tick % 2 != 0)	return;
 		var c1 = 0xCCCCFF;
 		var c2 = 0x8080FF;
@@ -409,9 +381,9 @@ class Fx {
 		p.life = 10*ratio+rnd(0, 10);
 		p.filters = [ new flash.filters.GlowFilter(c2, 1, 6, 6) ];
 		register(p);
-	}
+	}*/
 	
-	public function bossKill (x:Float, y:Float) {
+	/*public function bossKill (x:Float, y:Float) {
 		for (i in 0...7) {
 			//Game.TAM.identity();
 			//Game.TAM.translate(-40, -36);
@@ -438,9 +410,9 @@ class Fx {
 			//p.delay = 10;
 			register(p, BlendMode.NORMAL);
 		}
-	}
+	}*/
 	
-	public function speedLines (lvl:Int = 1) {
+	/*public function speedLines (lvl:Int = 1) {
 		//trace("speedlines " + lvl);
 		var col = 0xFFFFFF;
 		var alpha = rnd(0.3, 0.6);
@@ -498,12 +470,9 @@ class Fx {
 				register(p, BlendMode.OVERLAY);
 			}
 		}
-	}
+	}*/
 	
 	public inline function update() {
-		#if !standalone
-		perf = api.AKApi.getPerf();
-		#end
 		tick++;
 		Particle.update();
 	}

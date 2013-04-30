@@ -1,5 +1,6 @@
 package ;
 import flash.display.BitmapData;
+import flash.display.Shape;
 import flash.geom.Point;
 import Math;
 import utils.IntPoint;
@@ -20,7 +21,8 @@ class MapData extends BitmapData {
 	static public var C_ORE:UInt =		0xFF0000;
 	static public var C_BUSH:UInt =		0x00FF00;
 	static public var C_BUSHCUT:UInt =	0x00DD00;
-	static public var C_WATER:UInt =		0x0000FF;
+	static public var C_WATER:UInt =	0x0000FF;
+	static public var C_BASE:UInt =		0xFF00FF;
 	
 	static var RAND:Rand;
 	public var perlmap:BitmapData;
@@ -51,24 +53,34 @@ class MapData extends BitmapData {
 		bushperlmap.perlinNoise(bushperlmap.width /4, bushperlmap.height /4, 1, RAND.random(50000000), false, true, 7, true);
 		bushperlmap.threshold(bushperlmap, bushperlmap.rect, new Point(), "<=", 0xFF808080,0xFF000000);
 		bushperlmap.threshold(bushperlmap, bushperlmap.rect, new Point(), ">", 0xFF808080, 0xFFFFFFFF);
-			
+		
 		spawnRock();
 		spawnWater();
 		
 		var surface = Game.MAP_SIZE.width * Game.MAP_SIZE.height;
-		for (i in 0...Std.int(surface * 0.007))	spawnOre();
-		for (i in 0...Std.int(surface * 0.05))	spawnBush();
+		//for (i in 0...Std.int(surface * 0.007))	spawnOre();
+		for (i in 0...Std.int(surface * 0.07))	spawnBush();
 		
 		var mapCenter:IntPoint = new IntPoint(Std.int(Game.MAP_SIZE.width / 2), Std.int(Game.MAP_SIZE.height / 2));
 		playerStart = mapCenter.clone();
-		var safety:Int = 100;
+		var base:Shape = new Shape();
+		base.graphics.beginFill(C_GROUND);
+		base.graphics.drawCircle(playerStart.x, playerStart.y, 4);
+		base.graphics.endFill();
+		draw(base);
+		/*var safety:Int = 100;
 		while (getPixel(playerStart.x, playerStart.y) != C_GROUND && safety > 0) {
 			playerStart.x = mapCenter.x + RAND.random(17) - 8;
 			playerStart.y = mapCenter.y + RAND.random(17) - 8;
 			safety--;
 		}
-		if (safety == 0) return;
-		setPixel(playerStart.x, playerStart.y, 0xFF808080);
+		if (safety == 0) return;*/
+		//setPixel(playerStart.x, playerStart.y, 0xFFFF00CC);
+		/*Game.TAR.x = playerStart.x - 1;
+		Game.TAR.y = playerStart.y;
+		Game.TAR.width = 3;
+		Game.TAR.height = 2;
+		fillRect(Game.TAR, C_BASE);*/
 	}
 	
 	public function spawnDefault (type:E_Type,perlcon:Bool,perlconBW:UInt){
@@ -97,15 +109,16 @@ class MapData extends BitmapData {
 	}
 	
 	public function spawnWater () {
-		var t = 0xFF999999;//0xFFB0B0B0;
+		var t = 0xFFB0B0B0;
 		waterperlmap.threshold(waterperlmap, waterperlmap.rect, new Point(), "<", t, 0x00FFFFFF);
 		waterperlmap.threshold(waterperlmap, waterperlmap.rect, new Point(), ">=", t,0xFF000000+C_WATER);
 		draw(waterperlmap);
 	}
 	
 	public function spawnRock () {
-		rockperlmap.threshold(rockperlmap, rockperlmap.rect, new Point(), "<=", 0xFF666666,0xFF000000+C_ROCK);
-		rockperlmap.threshold(rockperlmap, rockperlmap.rect, new Point(), ">", 0xFF666666, 0x00FFFFFF);
+		var t = 0xFF6E6E6E;
+		rockperlmap.threshold(rockperlmap, rockperlmap.rect, new Point(), "<=", t,0xFF000000+C_ROCK);
+		rockperlmap.threshold(rockperlmap, rockperlmap.rect, new Point(), ">", t, 0x00FFFFFF);
 		draw(rockperlmap);
 	}
 	
@@ -137,11 +150,13 @@ class MapData extends BitmapData {
 			case E_Type.Bush:	C_BUSH;
 			case E_Type.BushCut:C_BUSHCUT;
 			case E_Type.Water:	C_WATER;
+			case E_Type.Base:	C_BASE;
 		}
 	}
 	
 	static public function getType (color:UInt) :E_Type {
 		return switch (color) {
+			case C_BASE:	E_Type.Base;
 			case C_ROCK:	E_Type.Rock;
 			case C_ROCKMINED:	E_Type.RockMined;
 			case C_ORE:		E_Type.Ore;

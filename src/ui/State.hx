@@ -16,7 +16,7 @@ class State extends Sprite {
 	}
 	
 	public function activate () :Void {
-		
+		MainUI.me.dirty = true;
 	}
 	
 	public function update () :Void {
@@ -24,7 +24,7 @@ class State extends Sprite {
 	}
 	
 	public function deactivate () :Void {
-		
+		MainUI.me.dirty = true;
 	}
 	
 }

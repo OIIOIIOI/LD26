@@ -16,6 +16,8 @@ import flash.events.Event;
 import flash.geom.Point;
 import flash.ui.Keyboard;
 import SoundManager;
+import ui.Fx;
+import ui.MainUI;
 import utils.DepthManager;
 import utils.FTimer;
 import utils.IntPoint;
@@ -27,21 +29,25 @@ import utils.IntPoint;
 
 class Level extends Sprite {
 	
-	static inline var MAP_DEPTH = 0;
-	static inline var ENTITIES_DEPTH = 10;
-	static inline var PLAYER_DEPTH = 20;
-	static inline var FX_DEPTH = 30;
+	static public inline var MAP_DEPTH = 0;
+	static public inline var ENTITIES_DEPTH = 10;
+	static public inline var PLAYER_DEPTH = 20;
+	static public inline var FX_DEPTH = 30;
 	static var DEPTHS = [MAP_DEPTH, ENTITIES_DEPTH, PLAYER_DEPTH, FX_DEPTH];
 	var dm:DepthManager;
+	var fx:Fx;
 	
 	var entities:Array<Entity>;
 	
 	var container:Sprite;
 	var map:Map;
-	var robot:Robot;
+	
+	public var robot:Robot;
 	var robotCenter:IntPoint;
 	
 	var scrollFloat:Point;
+	
+	var UI:MainUI;
 	
 	static public var me:Level;
 	
@@ -56,21 +62,25 @@ class Level extends Sprite {
 		container = new Sprite();
 		addChild(container);
 		
+		UI = new MainUI();
+		addChild(UI);
+		
 		dm = new DepthManager(container);
 		for (i in DEPTHS) {
 			var p = dm.getPlan(i);
 		}
+		fx = new Fx(dm);
 		
 		scrollFloat = new Point();
 		
-		//var mapData = new MapData(Game.RAND.random(99999));
-		var mapData = new MapData(4019);
+		var mapData = new MapData(Game.RAND.random(99999));
+		//var mapData = new MapData(4019);
 		
-		var minimap = new Bitmap(mapData);
-		minimap.x = Game.SIZE.width - mapData.width * 2;
-		minimap.y = Game.SIZE.height - mapData.height * 2;
+		/*var minimap = new Bitmap(mapData);
 		minimap.scaleX = minimap.scaleY = 2;
-		dm.add(minimap, FX_DEPTH);
+		minimap.x = Game.SIZE.width - mapData.width;
+		minimap.y = Game.SIZE.height - mapData.height;
+		dm.add(minimap, FX_DEPTH);*/
 		
 		container.x = (Game.SIZE.width / Game.TILE_SIZE - Game.REAL_MAP_SIZE.width) / 2 * Game.TILE_SIZE;
 		container.y = (Game.SIZE.height / Game.TILE_SIZE - Game.REAL_MAP_SIZE.height) / 2 * Game.TILE_SIZE;
@@ -81,15 +91,18 @@ class Level extends Sprite {
 		dm.add(map, MAP_DEPTH);
 		
 		robot = new Robot();
-		robotCenter = mapData.playerStart.clone();
+		//entities.push(robot);
+		/*robotCenter = mapData.playerStart.clone();
 		robotCenter.x = Std.int(Game.REAL_MAP_SIZE.width / 2) * Game.TILE_SIZE;
 		robotCenter.y = Std.int(Game.REAL_MAP_SIZE.height / 2) * Game.TILE_SIZE;
 		robot.x = robot.xTarget = 9 * Game.TILE_SIZE;
-		robot.y = robot.yTarget = 9 * Game.TILE_SIZE;
-		entities.push(robot);
-		dm.add(robot, PLAYER_DEPTH);
+		robot.y = robot.yTarget = 9 * Game.TILE_SIZE;*/
 		
-		map.render(new IntPoint(mapData.playerStart.x - 9, mapData.playerStart.y - 9));
+		map.render(new IntPoint(map.pixelData.playerStart.x - 9, map.pixelData.playerStart.y - 9));
+	}
+	
+	public function fakeStart () {
+		FTimer.delay(spawnRobot, 30);
 	}
 	
 	public function start () {
@@ -98,10 +111,12 @@ class Level extends Sprite {
 	}
 	
 	public function update () {
-		for (e in entities) {
+		/*for (e in entities) {
 			e.update();
-		}
+		}*/
+		robot.update();
 		map.update();
+		fx.update();
 	}
 	
 	function nextTurn (e:GameEvent) {
@@ -111,6 +126,7 @@ class Level extends Sprite {
 		}
 		
 		if (!SoundManager.me.delayed) {
+			//Fx.instance.text("yeah!", 0xD9995F, 20, robot.x, robot.y);
 			
 			var rxt = Std.int(robot.xTarget / Game.TILE_SIZE) + map.current.x;
 			var ryt = Std.int(robot.yTarget / Game.TILE_SIZE) + map.current.y;
@@ -145,7 +161,10 @@ class Level extends Sprite {
 					else {
 						map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.GroundDug));
 						map.render(map.current);
-						SoundManager.me.playSound(SM.SND_DIG);
+						SoundManager.me.queueSound(SM.SND_DIG);
+						var gold = 101 + Std.random(9);
+						MainUI.me.gold += gold;
+						Fx.instance.text("+" + gold, 0xD9995F, 20, robot.x, robot.y);
 					}
 				case E_Action.AMine:
 					switch (robot.facing) {
@@ -159,7 +178,10 @@ class Level extends Sprite {
 					else {
 						map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.RockMined));
 						map.render(map.current);
-						SoundManager.me.playSound(SM.SND_MINE);
+						SoundManager.me.queueSound(SM.SND_MINE);
+						var gold = 501 + Std.random(19);
+						MainUI.me.gold += gold;
+						Fx.instance.text("+" + gold, 0xD9995F, 20, robot.x, robot.y);
 					}
 				case E_Action.ASaw:
 					switch (robot.facing) {
@@ -173,7 +195,10 @@ class Level extends Sprite {
 					else {
 						map.pixelData.setPixel(rxt, ryt, MapData.getColor(E_Type.BushCut));
 						map.render(map.current);
-						SoundManager.me.playSound(SM.SND_SAW);
+						SoundManager.me.queueSound(SM.SND_SAW);
+						var gold = 251 + Std.random(9);
+						MainUI.me.gold += gold;
+						Fx.instance.text("+" + gold, 0xD9995F, 20, robot.x, robot.y);
 					}
 				default:
 			}
@@ -243,6 +268,11 @@ class Level extends Sprite {
 					ActionManager.insertAction(E_Action.ASaw);
 				}
 				return null;
+			case E_Type.Base:
+				if (p.x == 1)		ActionManager.insertAction(E_Action.ARight(1), true);
+				else if (p.x == -1)	ActionManager.insertAction(E_Action.ALeft(1), true);
+				else if (p.y == -1)	ActionManager.insertAction(E_Action.AUp(1), true);
+				else if (p.y == 1)	ActionManager.insertAction(E_Action.ADown(1), true);
 			/*case E_Type.Water:
 				if (ActionManager.canSwim) {
 					if (p.x == 1)		ActionManager.insertAction(E_Action.ARight(1), false);
@@ -250,8 +280,8 @@ class Level extends Sprite {
 					else if (p.y == -1)	ActionManager.insertAction(E_Action.AUp(1), false);
 					else if (p.y == 1)	ActionManager.insertAction(E_Action.ADown(1), false);
 					ActionManager.insertAction(E_Action.ASwim);
-				}
-				return null;*/
+				}*/
+				//return null;
 			default:
 		}
 		
@@ -285,8 +315,31 @@ class Level extends Sprite {
 		return t;
 	}
 	
-	function autoDestruct () {
-		robot.autoDestruct();
+	public function autoDestruct (step:Int = 0) {
+		switch (step) {
+			case 0:
+				EventManager.instance.removeEventListener(GE.SND_TICK, nextTurn);
+				robot.autoDestruct();
+				FTimer.delay(callback(autoDestruct, 1), 90);
+			case 1:
+				container.removeChild(robot);
+				FTimer.delay(spawnRobot, 30);
+		}
+	}
+	
+	function spawnRobot () {
+		robot.facing = Robot.FACING_DOWN;
+		robotCenter = map.pixelData.playerStart.clone();
+		robotCenter.x = Std.int(Game.REAL_MAP_SIZE.width / 2) * Game.TILE_SIZE;
+		robotCenter.y = Std.int(Game.REAL_MAP_SIZE.height / 2) * Game.TILE_SIZE;
+		robot.x = robot.xTarget = 9 * Game.TILE_SIZE;
+		robot.y = robot.yTarget = 9 * Game.TILE_SIZE;
+		dm.add(robot, PLAYER_DEPTH);
+		
+		map.render(new IntPoint(map.pixelData.playerStart.x - 9, map.pixelData.playerStart.y - 9));
+		
+		if (Game.me.currentState != Game.me.prepaState)	Game.me.selectState(Game.me.prepaState);
+		
 	}
 	
 	/*function eventHandler (e:GameEvent) {

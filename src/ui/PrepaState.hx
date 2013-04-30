@@ -11,12 +11,8 @@ import SoundManager;
 
 class PrepaState extends State {
 	
-	var button:Button;
-	
 	public function new () {
 		super();
-		
-		button = new Button();
 	}
 	
 	override public function activate () :Void {
@@ -24,6 +20,7 @@ class PrepaState extends State {
 		
 		SoundManager.me.selectTrack(SM.TRK_MENU);
 		
+		Level.me.robot.update();
 		addChild(Level.me);
 		
 		ActionManager.init();
@@ -35,19 +32,17 @@ class PrepaState extends State {
 			ActionManager.pushAction(ActionManager.getActionFromCard(c));
 		}
 		
-		button.addEventListener(MouseEvent.CLICK, clickHandler);
-		addChild(button);
+		Level.me.fakeStart();
+	}
+	
+	override public function update () :Void {
+		super.update();
+		MainUI.me.update();
 	}
 	
 	override public function deactivate () :Void {
 		super.deactivate();
 		removeChild(Level.me);
-		button.removeEventListener(MouseEvent.CLICK, clickHandler);
-		removeChild(button);
-	}
-	
-	private function clickHandler (e:MouseEvent) :Void {
-		Game.me.selectState(Game.me.exploState);
 	}
 	
 }

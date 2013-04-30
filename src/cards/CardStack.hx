@@ -11,6 +11,46 @@ class CardStack
 	public var nbofCards :Int;
 	public var stckCrdType : E_CardStackType;
 	
+	public function new(type:E_CardStackType)
+	{
+		switch(type) {
+			case E_CardStackType.deck:
+				cardlist = new Array();
+				stckCrdType = E_CardStackType.deck;
+				cardlist.push(new Card(E_Card.avancerhaut));
+				cardlist.push(new Card(E_Card.avancerhaut));
+				cardlist.push(new Card(E_Card.avancerbas));
+				cardlist.push(new Card(E_Card.avancerbas));
+				cardlist.push(new Card(E_Card.avancerdroite));
+				cardlist.push(new Card(E_Card.avancerdroite));
+				cardlist.push(new Card(E_Card.avancergauche));
+				cardlist.push(new Card(E_Card.avancergauche));
+				cardlist.push(new Card(E_Card.creuser));
+				cardlist.push(new Card(E_Card.creuser));
+				cardlist.push(new Card(E_Card.creuser));
+				cardlist.push(new Card(E_Card.creuser));
+				cardlist.push(new Card(E_Card.creuser));
+				cardlist.push(new Card(E_Card.creuser));
+				cardlist.push(new Card(E_Card.bouee));
+				cardlist.push(new Card(E_Card.bouee));
+				cardlist.push(new Card(E_Card.foreuse));
+				cardlist.push(new Card(E_Card.foreuse));
+				cardlist.push(new Card(E_Card.scie));
+				cardlist.push(new Card(E_Card.scie));
+				nbofCards = cardlist.length;
+			
+			case E_CardStackType.pioche:
+				cardlist = new Array();
+				nbofCards = 5 + Game.me.rank;
+				stckCrdType = E_CardStackType.pioche;
+			
+			case E_CardStackType.jeu:
+				cardlist = new Array();
+				nbofCards = 4;
+				stckCrdType = E_CardStackType.jeu;
+		}
+	}
+	
 	public function addCard(newcard:Card):Void {
 		cardlist.push(newcard);
 	}
@@ -49,38 +89,6 @@ class CardStack
 			cs.addCard(c.clone());
 		}
 		return cs;
-	}
-	
-	
-	public function new(type:E_CardStackType)
-	{
-		switch(type) {
-			case E_CardStackType.deck:	cardlist = new Array();
-											stckCrdType = E_CardStackType.deck;
-											cardlist.push(new Card(E_Card.avancerhaut));
-											cardlist.push(new Card(E_Card.avancerhaut));
-											//cardlist.push(new Card(E_Card.avancerbas));
-											//cardlist.push(new Card(E_Card.avancerbas));
-											//cardlist.push(new Card(E_Card.avancerdroite));
-											//cardlist.push(new Card(E_Card.avancerdroite));
-											cardlist.push(new Card(E_Card.avancergauche));
-											cardlist.push(new Card(E_Card.avancergauche));
-											//cardlist.push(new Card(E_Card.creuser));
-											//cardlist.push(new Card(E_Card.creuser));
-											//cardlist.push(new Card(E_Card.creuser));
-											//cardlist.push(new Card(E_Card.creuser));
-											//cardlist.push(new Card(E_Card.creuser));
-											//cardlist.push(new Card(E_Card.creuser));
-											nbofCards = cardlist.length;
-											
-			case E_CardStackType.pioche:	cardlist = new Array();
-											nbofCards = 5 + Game.me.rank;
-											stckCrdType = E_CardStackType.pioche;
-			
-			case E_CardStackType.jeu:		cardlist = new Array();
-											nbofCards = 4;
-											stckCrdType = E_CardStackType.jeu;
-		}
 	}
 	
 }

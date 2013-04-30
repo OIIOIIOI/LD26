@@ -159,6 +159,9 @@ class Map extends Sprite {
 				}
 			}
 		}
+		/*Game.TAP.x = (pixelData.playerStart.x - current.x) * Game.TILE_SIZE - 15;
+		Game.TAP.y = (pixelData.playerStart.y - current.y) * Game.TILE_SIZE + 20;
+		FM.copyFrame(data, "base", Game.SHEET_TILES, Game.TAP);*/
 		bitmap.x = bitmap.y = 0;
 	}
 	
